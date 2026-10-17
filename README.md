@@ -1,6 +1,6 @@
 # Gather — my recipes
 
-A phone-friendly personal cookbook with recipe search, ingredient search, recipe editing, and a shopping checklist. Includes six starter recipes. No account or API keys required.
+A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes six starter recipes. No account or API keys required.
 
 ## Run
 
@@ -14,7 +14,9 @@ The server listens on port 3000 (override with `PORT`). Open it in your browser 
 
 ## Your data
 
-Recipes and shopping items are stored in localStorage in the current browser and origin. They do not automatically sync across devices. Use **Back up recipes** to download a JSON copy and **Import backup** to merge recipes into another browser. Shopping lists are included in exports for reference; import merges recipes only. Clearing browser data removes local data.
+Recipes live in `public/recipes.js`, tracked in GitHub and published with the website. Every device sees the same collection. Send recipes to the assistant to add or update in that file, then push to `main` to trigger the GitHub Pages deployment. The browser only searches and displays this shared collection; it never reads or writes recipes in localStorage.
+
+Only the shopping checklist is stored locally on each browser. It does not sync across devices. Previous browser-saved recipes are left untouched but no longer used.
 
 ## Validate
 

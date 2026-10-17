@@ -28,6 +28,7 @@ jobs:
       - name: Verify app
         run: |
           node --check public/app.js
+          node --check public/recipes.js
           npm test
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
