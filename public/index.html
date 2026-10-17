@@ -2,19 +2,30 @@
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080e09"><title>Gather — Wasteland Recipe Terminal</title><link rel="stylesheet" href="./style.css"><script src="./recipes.js" defer></script><script src="./app.js" defer></script></head>
 <body>
-<header><a class="brand" href="./" aria-label="Gather terminal home"><span class="brand-icon">☢</span> GATHER<span class="brand-dot">PERSONAL PROVISIONS TERMINAL</span></a><nav aria-label="Main navigation"><button class="nav active" id="recipes-tab">Recipes</button><button class="nav" id="shopping-tab">Supplies <span id="list-count">0</span></button></nav><span class="collection-note">SYSTEM ONLINE</span></header>
+<div class="device-shell">
+<div class="case-top" aria-hidden="true"><i class="screw"></i><span>GATHER <b>3000</b></span><i class="screw"></i></div>
+<div class="side-controls" aria-hidden="true"><span class="dial"></span><span class="dial small-dial"></span><span class="power-light"></span></div>
+<div class="device-screen">
+<header><a class="brand" href="./" aria-label="Gather terminal home">GATHER<span class="brand-dot">PERSONAL FOOD COMPUTER</span></a><nav aria-label="Main navigation"><button class="nav active" id="recipes-tab">FOOD</button><button class="nav" id="shopping-tab">ITEMS <span id="list-count">0</span></button></nav><span class="collection-note">SYSTEM ONLINE</span></header>
 <main>
-<div class="terminal-bar"><span>GTHR-3000 // PERSONAL FIELD TERMINAL</span><span>● CONNECTION ESTABLISHED</span></div>
+<div class="terminal-bar"><span>PERSONAL PROVISIONS SYSTEM</span><span>● READY</span></div>
 <section id="recipes-view">
-<div class="hero"><div><div class="eyebrow">SURVIVAL STARTS WITH A GOOD MEAL</div><h1>STAY FED.<br><em>STAY ALIVE.</em></h1><p>Your personal recipe archive. Find your next meal, inspect the ingredients, and prepare for your next supply run.</p><div class="hero-note"><span>STATUS: READY</span> GOOD FOOD. ZERO RADIATION.</div></div><div class="hero-art" aria-hidden="true"><div class="art-label">PROVISIONS DIVISION // EST. 2077</div><svg class="survival-emblem" viewBox="0 0 220 190" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="110" cy="88" r="74" stroke-dasharray="3 7" opacity=".4"/><path d="M38 115h144M51 118c3 34 23 51 59 51s56-17 59-51M76 171h68M96 170v8h28v-8"/><path d="M84 88c-14-17 13-18 0-35M109 90c-15-19 15-23 0-43M135 88c-14-17 13-18 0-35" stroke-width="4"/><path d="M55 25v30m-7-28v13h14V27m-7 28v30M165 25v60m0-60c13 12 13 28 0 28"/><path d="M19 103h13m156 0h13M110 7v12M61 147l-9 10m116-10 9 10"/><path d="M78 131c8 12 20 18 32 18" opacity=".5"/><circle cx="110" cy="108" r="2" fill="currentColor"/></svg><div class="art-tag">[ NUTRITION MODULE <span>ONLINE</span> ]</div><div class="signal-bars"><i></i><i></i><i></i><i></i></div></div></div>
-<div class="collection-heading"><div><div class="eyebrow">DATA / PERSONAL RECIPE ARCHIVE</div><h2>SELECT YOUR RATIONS<span>_</span></h2></div><span id="recipe-count"></span></div>
+<h1 class="sr-only">Personal recipe archive</h1>
+<div class="hero">
+<div class="clock-module"><div class="eyebrow">LOCAL TIME / FIELD STATUS</div><div class="clock-face"><div class="date-stack"><span id="clock-day">---</span><strong id="clock-date">--</strong><span id="clock-month">---</span></div><div class="clock-numbers"><span id="clock-hour">--</span><span id="clock-minute">--</span></div><div class="clock-side"><span id="clock-period">--</span><span class="clock-ticks">▪<br>▪<br>▪</span></div></div><div class="hero-note">STAY FED. STAY ALIVE.</div></div>
+<div class="hero-art" aria-hidden="true"><svg class="survival-emblem" viewBox="0 0 180 210" fill="currentColor"><path d="M62 70c-13-6-19-17-12-30-6-12 1-27 16-28 5-14 25-15 32-4 15-7 32 2 32 17 15 8 14 29-2 35l-3 12Z"/><path d="M68 58h53v27c0 21-11 32-26 32S68 102 68 85Z"/><path d="M67 66h56M79 83h7m18 0h7m-28 17c8 6 15 6 24-1" fill="none" stroke="#173510" stroke-width="4" stroke-linecap="round"/><path d="m65 115-19 12-15-13-9 14 25 24c5 4 12 3 17-1l6-6-3 34h57l-3-39 11 11 15-15-24-24-16 8-14 12-14-13Z"/><path d="m75 180-6 24h20l8-24m6 0 7 24h21l-9-24M16 116l-5-13 8-5 6 9V85c0-7 10-7 10 0v16l8 5-11 21Z"/><path d="M83 130v43m27-42v42M82 151h30" fill="none" stroke="#173510" stroke-width="3"/><circle cx="96" cy="141" r="2" fill="#173510"/><circle cx="96" cy="160" r="2" fill="#173510"/><path d="m128 150 13 4 20-19-10-11Z"/><path d="M69 61h54M62 37h68" fill="none" stroke="#173510" stroke-width="3"/></svg><span class="art-tag">WELL FED <span>[ +10 HP ]</span></span><div class="signal-bars"><i></i><i></i><i></i><i></i></div></div>
+<div class="power-meter"><span>ϟ PWR</span><div class="power-track"><i></i></div><strong>89/100</strong></div>
+</div>
+<div class="collection-heading"><div><div class="eyebrow">PERSONAL RECIPE ARCHIVE</div><h2>FOOD INVENTORY</h2></div><span id="recipe-count"></span></div>
 <div class="filters"><label class="search"><span aria-hidden="true">&gt;_</span><input id="search" type="search" placeholder="SEARCH RECIPES / INGREDIENTS..." aria-label="Search recipes or ingredients"><kbd>⌘ K</kbd></label><div class="chips" id="categories" aria-label="Filter by category"></div></div>
 <div id="recipe-grid" class="recipe-grid"></div><div id="empty" class="empty" hidden><h3>No recipes found</h3><p>Try another recipe name or ingredient.</p></div>
 </section>
 <section id="shopping-view" hidden><div class="page-heading"><div class="eyebrow">INVENTORY / SUPPLY REQUISITION</div><h1>SUPPLY RUN<span>_</span></h1><p>Ingredients acquired? Mark them off. Return to base fully stocked.</p></div><div class="shopping-actions"><button id="clear-checked" class="secondary">Clear checked items</button><button id="clear-list" class="text-button">Clear list</button></div><form id="custom-item"><input name="item" placeholder="Add something else to your list…" aria-label="Shopping item" required maxlength="200"><button class="primary">Add item</button></form><div id="shopping-items"></div></section>
-<footer><a class="brand" href="./">☢ GATHER // 3000</a><span>END OF TRANSMISSION // EAT WELL, WANDERER.</span><small>One recipe collection, available on all your devices. Shopping checkmarks stay on this device.</small></footer>
+<footer><a class="brand" href="./">ϟ PWR — ONLINE</a><span>ALL SYSTEMS OPERATIONAL</span><small>One recipe collection, available on all your devices. Shopping checkmarks stay on this device.</small></footer>
 </main>
-<dialog id="recipe-dialog"><div class="dialog-top"><span class="eyebrow">FROM DATA / PERSONAL RECIPE ARCHIVE</span><button class="close" aria-label="Close recipe">×</button></div><div id="recipe-detail"></div></dialog>
+</div><div class="case-bottom" aria-hidden="true"><i class="screw"></i><span>GATHER // PROVISIONS DIVISION</span><i class="screw"></i></div>
+</div>
+<dialog id="recipe-dialog"><div class="dialog-top"><span class="eyebrow">FROM PERSONAL RECIPE ARCHIVE</span><button class="close" aria-label="Close recipe">×</button></div><div id="recipe-detail"></div></dialog>
 
 <div id="toast" role="status"></div>
 </body></html>

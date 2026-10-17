@@ -76,3 +76,15 @@ document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('c
 document.addEventListener('keydown', event => { if ((event.metaKey || event.ctrlKey) && event.key === 'k') { event.preventDefault(); switchView('recipes'); $('#search').focus(); } });
 renderRecipes(); renderShopping();
 if (!storageAvailable) toast('Shopping checklist storage is unavailable. Recipes are still available from the website.');
+
+function updateClock() {
+  const now = new Date();
+  $('#clock-hour').textContent = String(now.getHours()).padStart(2, '0');
+  $('#clock-minute').textContent = String(now.getMinutes()).padStart(2, '0');
+  $('#clock-period').textContent = 'HRS';
+  $('#clock-day').textContent = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+  $('#clock-date').textContent = String(now.getDate()).padStart(2, '0');
+  $('#clock-month').textContent = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+}
+updateClock();
+setInterval(updateClock, 10000);
