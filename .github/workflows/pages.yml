@@ -30,6 +30,8 @@ jobs:
           node --check public/app.js
           node --check public/recipes.js
           npm test
+      - name: Version website assets to refresh cached recipes and styles
+        run: node scripts/version-pages.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
