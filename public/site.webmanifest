@@ -8,7 +8,7 @@
   "theme_color": "#080e09",
   "icons": [
     {
-      "src": "./radtion-cook.png",
+      "src": "./apple-touch-icon.png",
       "type": "image/png",
       "purpose": "any"
     }
