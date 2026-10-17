@@ -5,8 +5,8 @@ window.GATHER_RECIPES = [
     title: 'Cream Cheese Chicken',
     category: 'Dinner',
     icon: 'CrockpotChicken',
-    time: null,
-    timeLabel: 'Cook through + 30 min',
+    time: 90,
+    timeLabel: '1 hr 30 min',
     servings: null,
     description: 'Our family’s favorite. Creamy shredded crockpot chicken served over rice.',
     ingredients: [
