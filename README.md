@@ -1,6 +1,6 @@
 # Radtion 4011 — my recipes
 
-A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes six starter recipes. No account or API keys required.
+A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes the family favorite Cream Cheese Chicken dinner recipe. No account or API keys required.
 
 ## Run
 

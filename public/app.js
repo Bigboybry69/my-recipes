@@ -33,7 +33,7 @@ function renderRecipes() {
     const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.setAttribute('aria-label', `View ${recipe.title}`);
     artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span>${foodIcon(recipe.category)}`; artwork.onclick = () => showRecipe(recipe.id);
     const body = document.createElement('div'); body.className = 'card-body';
-    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="card-bottom"><div class="metadata"><span>T: ${recipe.time} MIN</span><span>QTY: ${recipe.servings}</span></div><button class="add-list">+ SUPPLIES</button></div>`;
+    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="card-bottom"><div class="metadata"><span>${escapeHTML(recipe.timeLabel || `${recipe.time} MIN`)}</span>${recipe.servings ? `<span>QTY: ${recipe.servings}</span>` : ''}</div><button class="add-list">+ SUPPLIES</button></div>`;
     body.querySelector('.card-title').onclick = () => showRecipe(recipe.id); body.querySelector('.add-list').onclick = () => addRecipeToList(recipe);
     card.append(artwork, body); return card;
   }));
@@ -48,7 +48,7 @@ function addRecipeToList(recipe) {
 }
 function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${r.time} minutes</span><span>${r.servings} servings</span></div><p>${escapeHTML(r.description || '')}</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
   $('#recipe-dialog').showModal();
 }

@@ -1,9 +1,27 @@
-// Shared recipe collection. Add or update recipes here, then publish to GitHub Pages.
+// Shared family recipes, maintained here and published with the website.
 window.GATHER_RECIPES = [
-  { id: 'lemon-pasta', title: 'Creamy lemon pasta', category: 'Dinner', time: 25, servings: 2, emoji: '🍝', color: '#ede8d6', description: 'Bright, buttery, and a little bit indulgent. Your new weeknight favorite.', ingredients: ['200 g spaghetti', '2 tbsp butter', '1 lemon, zest and juice', '½ cup heavy cream', '¼ cup grated Parmesan', 'Salt and black pepper'], steps: ['Bring a large pot of salted water to a boil. Cook spaghetti according to package directions, reserving ½ cup pasta water before draining.', 'Melt butter in a skillet over medium-low heat. Stir in lemon zest and cream; simmer gently for 2 minutes.', 'Add spaghetti, lemon juice, and Parmesan. Toss with a splash of pasta water until glossy. Season to taste and serve.'] },
-  { id: 'avocado-toast', title: 'The perfect avocado toast', category: 'Breakfast', time: 10, servings: 1, emoji: '🥑', color: '#e1e8d7', description: 'Crispy sourdough, creamy avocado, and a sunny start to your day.', ingredients: ['2 slices sourdough bread', '1 ripe avocado', '1 tbsp lemon juice', '1 tsp olive oil', 'Chili flakes', 'Salt and black pepper'], steps: ['Toast the sourdough until golden and crisp.', 'Mash avocado with lemon juice, salt, and pepper.', 'Spread onto toast. Drizzle with olive oil and sprinkle with chili flakes.'] },
-  { id: 'summer-salad', title: 'Everyday Mediterranean salad', category: 'Lunch', time: 15, servings: 2, emoji: '🥗', color: '#ebded0', description: 'A colorful bowl of fresh crunch, salty feta, and sunshine.', ingredients: ['1 cucumber, chopped', '2 tomatoes, chopped', '½ red onion, sliced', '½ cup feta cheese', '¼ cup Kalamata olives', '2 tbsp olive oil', '1 tbsp red wine vinegar', '½ tsp dried oregano'], steps: ['Combine cucumber, tomatoes, red onion, and olives in a bowl.', 'Whisk olive oil, vinegar, and oregano together. Toss with the vegetables.', 'Top with crumbled feta and serve.'] },
-  { id: 'pancakes', title: 'Slow Sunday pancakes', category: 'Breakfast', time: 20, servings: 4, emoji: '🥞', color: '#efe0ca', description: 'Fluffy, golden stacks made for unhurried mornings.', ingredients: ['1½ cups all-purpose flour', '2 tbsp sugar', '2 tsp baking powder', '¼ tsp salt', '1¼ cups milk', '1 egg', '3 tbsp melted butter', 'Maple syrup, to serve'], steps: ['Whisk flour, sugar, baking powder, and salt in a bowl.', 'Mix milk, egg, and melted butter separately, then fold into the dry ingredients until just combined.', 'Heat a lightly buttered skillet over medium heat. Pour ¼ cup batter for each pancake. Flip when bubbles appear and cook until golden.', 'Serve warm with maple syrup.'] },
-  { id: 'cookies', title: 'Chocolate chunk cookies', category: 'Dessert', time: 30, servings: 12, emoji: '🍪', color: '#e6d7c3', description: 'Crisp edges, soft centers, and plenty of chocolate in every bite.', ingredients: ['½ cup softened butter', '¾ cup brown sugar', '1 egg', '1 tsp vanilla extract', '1¼ cups all-purpose flour', '½ tsp baking soda', '¼ tsp salt', '1 cup chocolate chunks'], steps: ['Heat oven to 350°F (175°C). Line a baking tray with parchment paper.', 'Beat butter and sugar until fluffy. Mix in egg and vanilla.', 'Stir in flour, baking soda, and salt, then fold in chocolate chunks.', 'Scoop 12 portions onto the tray, leaving space between them. Bake for 10–12 minutes, until edges are golden. Cool on the tray for 5 minutes.'] },
-  { id: 'tacos', title: 'Weeknight veggie tacos', category: 'Dinner', time: 25, servings: 3, emoji: '🌮', color: '#e7ead6', description: 'Big flavor, simple ingredients. A fresh take on taco night.', ingredients: ['6 small tortillas', '1 can black beans, drained', '1 bell pepper, sliced', '1 small onion, sliced', '1 tbsp olive oil', '1 tsp ground cumin', '1 avocado, sliced', '1 lime', 'Fresh cilantro'], steps: ['Heat olive oil in a skillet. Add onion and bell pepper; cook for 7–8 minutes until tender.', 'Add beans and cumin with a splash of water. Cook for 5 minutes and season to taste.', 'Warm tortillas, fill with vegetables and beans, and top with avocado, lime juice, and cilantro.'] }
+  {
+    id: 'cream-cheese-chicken',
+    title: 'Cream Cheese Chicken',
+    category: 'Dinner',
+    time: null,
+    timeLabel: 'Cook through + 30 min',
+    servings: null,
+    description: 'Our family’s favorite. Creamy shredded crockpot chicken served over rice.',
+    ingredients: [
+      'Rice — 4 servings',
+      '1 block cream cheese',
+      '1 can cream of chicken soup',
+      '1 stick butter',
+      '1 packet Italian dressing seasoning',
+      '2–4 chicken breasts, thawed'
+    ],
+    steps: [
+      'Put 1 stick of butter, 1 packet of Italian dressing seasoning, and 2–4 thawed chicken breasts in a crockpot. Cook on high until the chicken is cooked through.',
+      'Remove the chicken, shred it, and set it aside.',
+      'Add 1 block of cream cheese and 1 can of cream of chicken soup to the crockpot.',
+      'Return the shredded chicken to the crockpot and mix. Cover for 30 minutes or until creamy.',
+      'Prepare 4 servings of rice according to the package instructions. Serve the chicken over the rice.'
+    ]
+  }
 ];
