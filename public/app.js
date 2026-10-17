@@ -85,6 +85,18 @@ function updateClock() {
   $('#clock-day').textContent = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
   $('#clock-date').textContent = String(now.getDate()).padStart(2, '0');
   $('#clock-month').textContent = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+  const energy = window.mealPower(now);
+  $('#power-fill').style.width = `${energy.percent}%`;
+  $('#power-value').textContent = `${energy.percent}/100`;
+  $('#meal-power').setAttribute('aria-valuenow', energy.percent);
+  $('#meal-power').setAttribute('aria-valuetext', `${energy.percent}% energy. ${energy.name} at ${energy.time}.`);
+  const hours = Math.floor(energy.remaining / 60);
+  const minutes = energy.remaining % 60;
+  const countdown = [hours ? `${hours}H` : '', minutes ? `${minutes}M` : ''].filter(Boolean).join(' ');
+  $('#meal-status').textContent = energy.remaining === 0
+    ? `${energy.name} TIME // ENERGY REFILLS NEXT MINUTE`
+    : `NEXT: ${energy.name} ${energy.time} // ${countdown}`;
+  $('#meal-status').classList.toggle('low-power', energy.percent <= 15);
 }
 updateClock();
 setInterval(updateClock, 10000);

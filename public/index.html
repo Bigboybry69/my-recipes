@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080e09"><title>Radtion — Wasteland Recipe Terminal</title><link rel="stylesheet" href="./style.css"><script src="./recipes.js" defer></script><script src="./app.js" defer></script></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080e09"><title>Radtion — Wasteland Recipe Terminal</title><link rel="stylesheet" href="./style.css"><script src="./recipes.js" defer></script><script src="./meal-power.js" defer></script><script src="./app.js" defer></script></head>
 <body>
 <div class="device-shell">
 <div class="case-top" aria-hidden="true"><i class="screw"></i><span>RADTION <b>4011</b></span><i class="screw"></i></div>
@@ -14,7 +14,8 @@
 <div class="hero">
 <div class="clock-module"><div class="eyebrow">LOCAL TIME / FIELD STATUS</div><div class="clock-face"><div class="date-stack"><span id="clock-day">---</span><strong id="clock-date">--</strong><span id="clock-month">---</span></div><div class="clock-numbers"><span id="clock-hour">--</span><span id="clock-minute">--</span></div><div class="clock-side"><span id="clock-period">--</span><span class="clock-ticks">▪<br>▪<br>▪</span></div></div><div class="hero-note">STAY FED. STAY ALIVE.</div></div>
 <div class="hero-art" aria-hidden="true"><img class="survival-emblem cook-mascot" src="./radtion-cook.png" alt="" width="180" height="210"><span class="art-tag">WELL FED <span>[ +10 HP ]</span></span><div class="signal-bars"><i></i><i></i><i></i><i></i></div></div>
-<div class="power-meter"><span>ϟ PWR</span><div class="power-track"><i></i></div><strong>89/100</strong></div>
+<div class="power-meter"><span>ϟ PWR</span><div class="power-track" id="meal-power" role="progressbar" aria-label="Meal energy" aria-valuemin="0" aria-valuemax="100"><i id="power-fill"></i></div><strong id="power-value">--/100</strong></div>
+<div class="meal-status" id="meal-status">LOADING MEAL SCHEDULE...</div>
 </div>
 <div class="collection-heading"><div><div class="eyebrow">PERSONAL RECIPE ARCHIVE</div><h2>FOOD INVENTORY</h2></div><span id="recipe-count"></span></div>
 <div class="filters"><label class="search"><span aria-hidden="true">&gt;_</span><input id="search" type="search" placeholder="SEARCH RECIPES / INGREDIENTS..." aria-label="Search recipes or ingredients"><kbd>⌘ K</kbd></label><div class="chips" id="categories" aria-label="Filter by category"></div></div>

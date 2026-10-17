@@ -21,3 +21,5 @@ main{max-width:none;margin:0;padding:0}.terminal-bar{font-size:8px;letter-spacin
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
 .cook-mascot{object-fit:contain;object-position:center;mix-blend-mode:screen}
+
+.power-meter{margin-bottom:0}.power-track i{transition:width 1s linear}.meal-status{grid-column:1/-1;font-size:9px;letter-spacing:.7px;padding:3px 0 12px;color:var(--muted)}.meal-status.low-power{color:var(--bright)}@media(max-width:600px){.meal-status{font-size:7px;letter-spacing:.2px;padding:2px 0 12px}}@media(prefers-reduced-motion:reduce){.power-track i{transition:none}}
