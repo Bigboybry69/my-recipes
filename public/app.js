@@ -13,20 +13,27 @@ let toastTimer;
 function toast(message) { $('#toast').textContent = message; $('#toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 3300); }
 function save() { try { localStorage.setItem('gather-shopping', JSON.stringify(shopping)); return true; } catch { storageAvailable = false; toast('Browser storage is unavailable or full. Your shopping checklist will only last for this visit.'); return false; } }
 function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-const emojis = { Dinner: '🍲', Lunch: '🥗', Breakfast: '🥞', Dessert: '🍰', Snacks: '🥨' };
+const foodPaths = {
+  Dinner: '<path d="M21 47h78c-3 25-16 34-39 34S24 72 21 47Z M45 83h30 M44 32c-9-10 9-11 0-23 M60 32c-9-10 9-11 0-23 M76 32c-9-10 9-11 0-23"/>',
+  Lunch: '<path d="M21 48h78c-3 23-16 33-39 33S24 71 21 48Z M38 47c-13-19 4-33 17-13 M57 46c-7-24 15-35 21-14 M77 47c0-15 16-20 19-9 M45 83h30 M33 33l13 9 M67 23l-2 20"/>',
+  Breakfast: '<path d="M29 45c-12-24 3-33 31-33s43 9 31 33v35H29V45Z M38 46c-9-17 2-23 22-23s31 6 22 23v24H38V46Z"/><circle cx="60" cy="48" r="13"/><path d="M55 46h1m8 0h1 M53 55c5 4 10 4 15 0"/>',
+  Dessert: '<path d="M23 72h76L84 34H37L23 72Z M23 73v9h76v-9 M37 34l47 0 M61 34V20 M61 18c-10-8 0-12 0-17 10 10 8 14 0 17Z M30 55c9-15 16 9 24-2s12 12 20 0 14 7 18 1"/>',
+  Snacks: '<circle cx="60" cy="47" r="34"/><circle cx="48" cy="32" r="4"/><circle cx="75" cy="40" r="4"/><circle cx="56" cy="59" r="5"/><path d="m37 49 6 4m27 12 5-5m-9-35 3 3"/>'
+};
+function foodIcon(category) { return `<svg class="food-icon" viewBox="0 0 120 95" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${foodPaths[category] || foodPaths.Dinner}</svg>`; }
 function renderRecipes() {
   const query = $('#search').value.trim().toLowerCase();
   const filtered = recipes.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...r.ingredients].join(' ').toLowerCase().includes(query));
-  $('#recipe-count').textContent = `${recipes.length} recipes to love`;
+  $('#recipe-count').textContent = `${filtered.length} / ${recipes.length} RECORDS`;
   $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks'].map(name => {
     const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
   }));
   $('#recipe-grid').replaceChildren(...filtered.map(recipe => {
     const card = document.createElement('article'); card.className = 'recipe-card';
-    const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.style.setProperty('--card-bg', /^#[a-fA-F0-9]{6}$/.test(recipe.color || '') ? recipe.color : '#e5eadb'); artwork.setAttribute('aria-label', `View ${recipe.title}`);
-    artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span><span class="food-emoji" aria-hidden="true">${escapeHTML(recipe.emoji || emojis[recipe.category] || '🍽️')}</span>`; artwork.onclick = () => showRecipe(recipe.id);
+    const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.setAttribute('aria-label', `View ${recipe.title}`);
+    artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span>${foodIcon(recipe.category)}`; artwork.onclick = () => showRecipe(recipe.id);
     const body = document.createElement('div'); body.className = 'card-body';
-    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="card-bottom"><div class="metadata"><span>◷ ${recipe.time} min</span><span>♧ ${recipe.servings} servings</span></div><button class="add-list">＋ Shopping list</button></div>`;
+    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="card-bottom"><div class="metadata"><span>T: ${recipe.time} MIN</span><span>QTY: ${recipe.servings}</span></div><button class="add-list">+ SUPPLIES</button></div>`;
     body.querySelector('.card-title').onclick = () => showRecipe(recipe.id); body.querySelector('.add-list').onclick = () => addRecipeToList(recipe);
     card.append(artwork, body); return card;
   }));
@@ -41,7 +48,7 @@ function addRecipeToList(recipe) {
 }
 function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${escapeHTML(r.emoji || emojis[r.category] || '🍽️')}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${r.time} minutes</span><span>${r.servings} servings</span></div><p>${escapeHTML(r.description || '')}</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Let’s make it</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="detail-shop">＋ Add ingredients to shopping list</button></div>`;
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${r.time} minutes</span><span>${r.servings} servings</span></div><p>${escapeHTML(r.description || '')}</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
   $('#recipe-dialog').showModal();
 }
