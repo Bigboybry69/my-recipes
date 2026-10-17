@@ -73,8 +73,28 @@ function renderShopping() {
     items.append(row);
   });
 }
-function switchView(view) { const recipesActive = view === 'recipes'; $('#recipes-view').hidden = !recipesActive; $('#shopping-view').hidden = recipesActive; $('#recipes-tab').classList.toggle('active', recipesActive); $('#shopping-tab').classList.toggle('active', !recipesActive); $('#recipes-tab').setAttribute('aria-current', recipesActive ? 'page' : 'false'); $('#shopping-tab').setAttribute('aria-current', recipesActive ? 'false' : 'page'); }
-$('#recipes-tab').onclick = () => switchView('recipes'); $('#shopping-tab').onclick = () => switchView('shopping');
+const viewHashes = { stats: '#stats', recipes: '#food', shopping: '#items' };
+function switchView(view, updateLocation = true) {
+  if (!Object.hasOwn(viewHashes, view)) view = 'stats';
+  for (const name of Object.keys(viewHashes)) {
+    const active = name === view;
+    $(`#${name}-view`).hidden = !active;
+    const tab = $(`#${name}-tab`);
+    tab.classList.toggle('active', active);
+    if (active) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
+  }
+  if (updateLocation && location.hash !== viewHashes[view]) location.hash = viewHashes[view];
+}
+function viewFromLocation() {
+  const view = Object.keys(viewHashes).find(name => viewHashes[name] === location.hash) || 'stats';
+  switchView(view, false);
+}
+$('#stats-tab').onclick = () => switchView('stats');
+$('#recipes-tab').onclick = () => switchView('recipes');
+$('#shopping-tab').onclick = () => switchView('shopping');
+window.addEventListener('hashchange', viewFromLocation);
+viewFromLocation();
 $('#search').oninput = renderRecipes;
 $('#custom-item').onsubmit = event => { event.preventDefault(); const input = event.currentTarget.elements.item; if (!input.value.trim()) return; shopping.push({ id: crypto.randomUUID(), text: input.value.trim(), checked: false }); save(); renderShopping(); input.value = ''; input.focus(); };
 $('#clear-checked').onclick = () => { shopping = shopping.filter(i => !i.checked); save(); renderShopping(); };

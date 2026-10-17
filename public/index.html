@@ -6,11 +6,11 @@
 <div class="case-top" aria-hidden="true"><i class="screw"></i><span>RADTION <b>4011</b></span><i class="screw"></i></div>
 <div class="side-controls" aria-hidden="true"><span class="dial"></span><span class="dial small-dial"></span><span class="power-light"></span></div>
 <div class="device-screen">
-<header><a class="brand" href="./" aria-label="Radtion terminal home">RADTION<span class="brand-dot">PERSONAL FOOD COMPUTER</span></a><nav aria-label="Main navigation"><button class="nav active" id="recipes-tab">FOOD</button><button class="nav" id="shopping-tab">ITEMS <span id="list-count">0</span></button></nav><span class="collection-note">SYSTEM ONLINE</span></header>
+<header><a class="brand" href="./" aria-label="Radtion terminal home">RADTION<span class="brand-dot">PERSONAL FOOD COMPUTER</span></a><nav aria-label="Main navigation"><button class="nav active" id="stats-tab" aria-controls="stats-view" aria-current="page">STATS</button><button class="nav" id="recipes-tab" aria-controls="recipes-view">FOOD</button><button class="nav" id="shopping-tab" aria-controls="shopping-view">ITEMS <span id="list-count">0</span></button></nav><span class="collection-note">SYSTEM ONLINE</span></header>
 <main>
 <div class="terminal-bar"><span>PERSONAL PROVISIONS SYSTEM</span><span>● READY</span></div>
-<section id="recipes-view">
-<h1 class="sr-only">Personal recipe archive</h1>
+<section id="stats-view" aria-label="Character stats">
+<h1 class="sr-only">Health and experience stats</h1>
 <div class="hero">
 <div class="clock-module"><div class="eyebrow">LOCAL TIME / FIELD STATUS</div><div class="clock-face"><div class="date-stack"><span id="clock-day">---</span><strong id="clock-date">--</strong><span id="clock-month">---</span></div><div class="clock-numbers"><span id="clock-hour">--</span><span id="clock-minute">--</span></div><div class="clock-side"><span id="clock-period">--</span><span class="clock-ticks">▪<br>▪<br>▪</span></div></div><div class="hero-note">STAY FED. STAY ALIVE.</div></div>
 <div class="hero-art" aria-hidden="true"><img class="survival-emblem cook-mascot" src="./radtion-cook.png" alt="" width="180" height="210"><span class="art-tag">WELL FED <span>[ +HP ]</span></span><div class="signal-bars"><i></i><i></i><i></i><i></i></div></div>
@@ -19,6 +19,9 @@
 <div class="power-meter xp-meter"><span>XP <small id="xp-level">LVL 1</small></span><div class="power-track" id="xp-bar" role="progressbar" aria-label="Recipe collection experience" aria-valuemin="0" aria-valuemax="100"><i id="xp-fill"></i></div><strong id="xp-value">--/100</strong></div>
 <div class="meal-status" id="xp-status"></div>
 </div>
+</section>
+<section id="recipes-view" aria-label="Recipe collection" hidden>
+<h1 class="sr-only">Personal recipe archive</h1>
 <div class="collection-heading"><div><div class="eyebrow">PERSONAL RECIPE ARCHIVE</div><h2>FOOD INVENTORY</h2></div><span id="recipe-count"></span></div>
 <div class="filters"><label class="search"><span aria-hidden="true">&gt;_</span><input id="search" type="search" placeholder="SEARCH RECIPES / INGREDIENTS..." aria-label="Search recipes or ingredients"><kbd>⌘ K</kbd></label><div class="chips" id="categories" aria-label="Filter by category"></div></div>
 <div id="recipe-grid" class="recipe-grid"></div><div id="empty" class="empty" hidden><h3>No recipes found</h3><p>Try another recipe name or ingredient.</p></div>
