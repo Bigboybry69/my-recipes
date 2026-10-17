@@ -6,6 +6,8 @@ function read(key, fallback) {
   try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
   catch { storageAvailable = false; return fallback; }
 }
+let health = read('radtion-health', {});
+if (!health || typeof health !== 'object' || Array.isArray(health)) health = {};
 let shopping = read('gather-shopping', []);
 if (!Array.isArray(shopping) || !shopping.every(i => i && typeof i.id === 'string' && typeof i.text === 'string')) shopping = [];
 let category = 'All recipes';
@@ -30,11 +32,12 @@ function renderRecipes() {
     const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
   }));
   $('#recipe-grid').replaceChildren(...filtered.map(recipe => {
+    const stats = window.RecipeStats.recipeStats(recipe);
     const card = document.createElement('article'); card.className = 'recipe-card';
     const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.setAttribute('aria-label', `View ${recipe.title}`);
     artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span>${foodIcon(recipe.category, recipe.icon)}`; artwork.onclick = () => showRecipe(recipe.id);
     const body = document.createElement('div'); body.className = 'card-body';
-    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="card-bottom"><div class="metadata"><span>${escapeHTML(recipe.timeLabel || `${recipe.time} MIN`)}</span>${recipe.servings ? `<span>QTY: ${recipe.servings}</span>` : ''}</div><button class="add-list">+ SUPPLIES</button></div>`;
+    body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="recipe-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>+${stats.hp} HP</span><span>+${stats.xp} XP</span></div><div class="card-bottom"><div class="metadata"><span>${escapeHTML(recipe.timeLabel || `${recipe.time} MIN`)}</span>${recipe.servings ? `<span>QTY: ${recipe.servings}</span>` : ''}</div><button class="add-list">+ SUPPLIES</button></div>`;
     body.querySelector('.card-title').onclick = () => showRecipe(recipe.id); body.querySelector('.add-list').onclick = () => addRecipeToList(recipe);
     card.append(artwork, body); return card;
   }));
@@ -49,8 +52,12 @@ function addRecipeToList(recipe) {
 }
 function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
+  const stats = window.RecipeStats.recipeStats(r);
+  $('#recipe-detail').dataset.recipeId = r.id;
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p><div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>RESTORES +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. XP is earned once by adding this recipe to the collection.</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="eat-meal">EAT THIS MEAL // +${stats.hp} HP</button><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
+  $('#eat-meal').onclick = () => eatMeal(r);
+  updateHealth(new Date());
   $('#recipe-dialog').showModal();
 }
 function renderShopping() {
@@ -86,18 +93,57 @@ function updateClock() {
   $('#clock-day').textContent = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
   $('#clock-date').textContent = String(now.getDate()).padStart(2, '0');
   $('#clock-month').textContent = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+  updateHealth(now);
+}
+function updateHealth(now) {
   const energy = window.mealPower(now);
-  $('#power-fill').style.width = `${energy.percent}%`;
-  $('#power-value').textContent = `${energy.percent}/100`;
-  $('#meal-power').setAttribute('aria-valuenow', energy.percent);
-  $('#meal-power').setAttribute('aria-valuetext', `${energy.percent}% energy. ${energy.name} at ${energy.time}.`);
+  const cycle = window.RecipeStats.healthCycle(now, energy);
+  if (health.cycle !== cycle) health = { cycle, bonus: 0, eaten: [] };
+  if (!Number.isFinite(health.bonus) || health.bonus < 0) health.bonus = 0;
+  if (!Array.isArray(health.eaten)) health.eaten = [];
+  const hp = Math.min(100, energy.percent + health.bonus);
+  $('#power-fill').style.width = `${hp}%`;
+  $('#power-value').textContent = `${hp}/100`;
+  $('#meal-power').setAttribute('aria-valuenow', hp);
+  $('#meal-power').setAttribute('aria-valuetext', `${hp} health points. ${energy.name} at ${energy.time}.`);
   const hours = Math.floor(energy.remaining / 60);
   const minutes = energy.remaining % 60;
   const countdown = [hours ? `${hours}H` : '', minutes ? `${minutes}M` : ''].filter(Boolean).join(' ');
   $('#meal-status').textContent = energy.remaining === 0
-    ? `${energy.name} TIME // ENERGY REFILLS NEXT MINUTE`
+    ? `${energy.name} TIME // HP REFILLS NEXT MINUTE`
     : `NEXT: ${energy.name} ${energy.time} // ${countdown}`;
-  $('#meal-status').classList.toggle('low-power', energy.percent <= 15);
+  $('#meal-status').classList.toggle('low-power', hp <= 15);
+  const eat = $('#eat-meal');
+  if (eat) {
+    const currentId = $('#recipe-detail').dataset.recipeId;
+    eat.disabled = hp >= 100 || health.eaten.includes(currentId);
+    if (health.eaten.includes(currentId)) eat.textContent = 'MEAL LOGGED // HP RESTORED';
+  }
 }
+function eatMeal(recipe) {
+  const now = new Date();
+  updateHealth(now);
+  if (health.eaten.includes(recipe.id)) { toast('Meal already logged for this mealtime.'); return; }
+  const base = window.mealPower(now).percent;
+  const before = Math.min(100, base + health.bonus);
+  const restored = Math.min(window.RecipeStats.recipeStats(recipe).hp, 100 - before);
+  if (!restored) { toast('HP already full.'); return; }
+  health.bonus += restored;
+  health.eaten.push(recipe.id);
+  try { localStorage.setItem('radtion-health', JSON.stringify(health)); }
+  catch { toast('HP restored for this visit; browser storage unavailable.'); updateHealth(now); return; }
+  updateHealth(now);
+  toast(`Meal logged. +${restored} HP restored.`);
+}
+function renderXP() {
+  const xp = window.RecipeStats.collectionStats(recipes);
+  $('#xp-level').textContent = `LVL ${xp.level}`;
+  $('#xp-fill').style.width = `${xp.progress}%`;
+  $('#xp-value').textContent = `${xp.progress}/100`;
+  $('#xp-bar').setAttribute('aria-valuenow', xp.progress);
+  $('#xp-bar').setAttribute('aria-valuetext', `Level ${xp.level}. ${xp.progress} of 100 XP to next level. ${xp.total} total XP.`);
+  $('#xp-status').textContent = `${xp.total} TOTAL XP // ADD RECIPES TO LEVEL UP`;
+}
+renderXP();
 updateClock();
 setInterval(updateClock, 10000);
