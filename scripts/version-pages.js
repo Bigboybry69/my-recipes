@@ -5,5 +5,5 @@ if (!version || !/^[a-f0-9]{40}$/.test(version)) throw new Error('Expected a ful
 const root = path.resolve(__dirname, '../public');
 const file = path.join(root, 'index.html');
 let html = fs.readFileSync(file, 'utf8');
-html = html.replace(/((?:src|href)="\.\/[^"?]+\.(?:js|css|png))"/g, `$1?v=${version}"`);
+html = html.replace(/((?:src|href)="\.\/[^"?]+\.(?:js|css|png|webmanifest))"/g, `$1?v=${version}"`);
 fs.writeFileSync(file, html);

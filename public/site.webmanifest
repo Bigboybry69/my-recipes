@@ -1,0 +1,16 @@
+{
+  "name": "Radtion 4011",
+  "short_name": "Radtion",
+  "start_url": "./#stats",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071005",
+  "theme_color": "#080e09",
+  "icons": [
+    {
+      "src": "./radtion-cook.png",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
