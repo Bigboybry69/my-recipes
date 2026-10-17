@@ -6,8 +6,6 @@ function read(key, fallback) {
   try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
   catch { storageAvailable = false; return fallback; }
 }
-let health = read('radtion-health', {});
-if (!health || typeof health !== 'object' || Array.isArray(health)) health = {};
 let shopping = read('gather-shopping', []);
 if (!Array.isArray(shopping) || !shopping.every(i => i && typeof i.id === 'string' && typeof i.text === 'string')) shopping = [];
 let category = 'All recipes';
@@ -54,9 +52,8 @@ function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
   const stats = window.RecipeStats.recipeStats(r);
   $('#recipe-detail').dataset.recipeId = r.id;
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p><div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>RESTORES +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. XP is earned once by adding this recipe to the collection.</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="primary" id="eat-meal">EAT THIS MEAL // +${stats.hp} HP</button><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p><div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>FLAVOR BONUS +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. HP bonuses are just for fun; your health bar refills automatically an hour after each meal. XP comes from adding recipes to the collection.</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
-  $('#eat-meal').onclick = () => eatMeal(r);
   updateHealth(new Date());
   $('#recipe-dialog').showModal();
 }
@@ -117,12 +114,8 @@ function updateClock() {
 }
 function updateHealth(now) {
   const energy = window.mealPower(now);
-  const cycle = window.RecipeStats.healthCycle(now, energy);
-  if (health.cycle !== cycle) health = { cycle, bonus: 0, eaten: [] };
-  if (!Number.isFinite(health.bonus) || health.bonus < 0) health.bonus = 0;
-  if (!Array.isArray(health.eaten)) health.eaten = [];
   const { maxHP } = window.RecipeStats.collectionStats(recipes);
-  const status = window.RecipeStats.healthState(energy.percent, health.bonus, maxHP);
+  const status = window.RecipeStats.healthState(energy.percent, maxHP);
   const hp = status.hp;
   document.body.dataset.health = status.state;
   const statusText = status.state === 'critical' ? 'CRITICAL HP // EAT SOON' : status.state === 'warning' ? 'LOW HP // MEAL RECOMMENDED' : 'ALL SYSTEMS OPERATIONAL';
@@ -133,34 +126,14 @@ function updateHealth(now) {
   $('#meal-power').setAttribute('aria-valuemax', maxHP);
   $('#meal-power').setAttribute('aria-valuenow', hp);
   $('#meal-power').setAttribute('aria-valuetext', `${hp} of ${maxHP} health points. ${energy.name} at ${energy.time}.`);
-  const hours = Math.floor(energy.remaining / 60);
-  const minutes = energy.remaining % 60;
+  const remaining = energy.recovering ? energy.refillRemaining : energy.remaining;
+  const hours = Math.floor(remaining / 60);
+  const minutes = remaining % 60;
   const countdown = [hours ? `${hours}H` : '', minutes ? `${minutes}M` : ''].filter(Boolean).join(' ');
-  $('#meal-status').textContent = energy.remaining === 0
-    ? `${energy.name} TIME // HP REFILLS NEXT MINUTE`
+  $('#meal-status').textContent = energy.recovering
+    ? `${energy.name} // AUTO REFILL ${energy.refillTime} // ${countdown}`
     : `NEXT: ${energy.name} ${energy.time} // ${countdown}`;
   $('#meal-status').classList.toggle('low-power', status.state !== 'normal');
-  const eat = $('#eat-meal');
-  if (eat) {
-    const currentId = $('#recipe-detail').dataset.recipeId;
-    eat.disabled = hp >= maxHP || health.eaten.includes(currentId);
-    if (health.eaten.includes(currentId)) eat.textContent = 'MEAL LOGGED // HP RESTORED';
-  }
-}
-function eatMeal(recipe) {
-  const now = new Date();
-  updateHealth(now);
-  if (health.eaten.includes(recipe.id)) { toast('Meal already logged for this mealtime.'); return; }
-  const { maxHP } = window.RecipeStats.collectionStats(recipes);
-  const before = window.RecipeStats.healthState(window.mealPower(now).percent, health.bonus, maxHP).hp;
-  const restored = Math.min(window.RecipeStats.recipeStats(recipe).hp, maxHP - before);
-  if (!restored) { toast('HP already full.'); return; }
-  health.bonus += restored;
-  health.eaten.push(recipe.id);
-  try { localStorage.setItem('radtion-health', JSON.stringify(health)); }
-  catch { toast('HP restored for this visit; browser storage unavailable.'); updateHealth(now); return; }
-  updateHealth(now);
-  toast(`Meal logged. +${restored} HP restored.`);
 }
 function renderXP() {
   const xp = window.RecipeStats.collectionStats(recipes);

@@ -10,18 +10,13 @@
     const level = 1 + Math.floor(total / 200);
     return { total, level, progress: total % 200, next: 200, maxHP: 100 + (level - 1) * 5 };
   }
-  function healthState(percent, bonus, maxHP) {
+  function healthState(percent, maxHP) {
     const base = Math.max(18, Math.round(maxHP * Math.max(0, Math.min(100, percent)) / 100));
-    const hp = Math.min(maxHP, base + Math.max(0, bonus));
+    const hp = Math.min(maxHP, base);
     const ratio = hp / maxHP;
     return { hp, maxHP, percent: ratio * 100, state: ratio < 0.3 ? 'critical' : ratio < 0.5 ? 'warning' : 'normal' };
   }
-  function healthCycle(now, meal) {
-    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    if (meal.name === 'BREAKFAST' && now.getHours() * 60 + now.getMinutes() > 450) target.setDate(target.getDate() + 1);
-    return `${target.getFullYear()}-${target.getMonth() + 1}-${target.getDate()}-${meal.name}`;
-  }
-  const api = { recipeStats, collectionStats, healthCycle, healthState };
+  const api = { recipeStats, collectionStats, healthState };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RecipeStats = api;
 })(typeof window !== 'undefined' ? window : globalThis);
