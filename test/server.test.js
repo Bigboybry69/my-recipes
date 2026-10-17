@@ -10,6 +10,10 @@ test('serves the cookbook and assets, rejects missing files', async () => {
       const response = await fetch(`http://127.0.0.1:3199${route}`);
       assert.equal(response.status, 200); assert.ok(response.headers.get('content-type').includes(type)); assert.ok((await response.text()).toLowerCase().includes(content.toLowerCase()));
     }
+    const mascot = await fetch('http://127.0.0.1:3199/radtion-cook.png');
+    assert.equal(mascot.status, 200);
+    assert.ok(mascot.headers.get('content-type').startsWith('image/png'));
+    assert.deepEqual(Buffer.from(await mascot.arrayBuffer()).subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
     assert.equal((await fetch('http://127.0.0.1:3199/missing')).status, 404);
   } finally { server.kill(); await once(server, 'exit'); }
 });
