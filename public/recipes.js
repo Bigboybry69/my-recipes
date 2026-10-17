@@ -89,5 +89,40 @@ window.GATHER_RECIPES = [
         "Bring each triangle’s point up and over the filling, then tuck it beneath the bottom layer of dough to hold it in place. Repeat around the ring. A little filling may remain visible.",
         "Bake for 20–25 minutes, until golden brown and the dough is thoroughly baked. Cool for 5–10 minutes before cutting into serving slices. Serve warm with the optional toppings."
     ]
+},
+{
+    "id": "adana-kebab",
+    "title": "Adana Kebab",
+    "category": "Dinner",
+    "icon": "Kebab",
+    "time": 30,
+    "timeLabel": "30 min",
+    "servings": 4,
+    "description": "Spicy Turkish ground-meat kebabs, grilled on wide skewers and served with flatbread and charred vegetables.",
+    "notes": "Makes 4 small servings. Use meat with at least 15% fat. Use 75 g butter for meat with about 15% fat, or 50 g for meat with about 20% fat. Wide, flat metal skewers help the kebabs hold their shape. If using a grill pan indoors, ventilate well because dripping fat produces smoke.",
+    "ingredients": [
+        "½ medium onion, approximately 50 g net weight",
+        "15 g flat-leaf parsley leaves",
+        "400 g minced lamb, beef, or a mix (at least 15% fat)",
+        "50–75 g butter, melted (preferably clarified), or finely chopped lamb fat",
+        "1 tbsp pul biber (Aleppo pepper), or to taste",
+        "1 tsp salt",
+        "½ tsp black pepper",
+        "1 medium tomato, halved or quartered (for grilling)",
+        "4 Turkish green peppers (sivri or çarliston), or other mild long green peppers (for grilling)",
+        "Turkish sumac onions (optional serving side)",
+        "Lavash or other flatbread (for serving)",
+        "Ezme salad (optional serving side)",
+        "Chopped salad (optional serving side)"
+    ],
+    "steps": [
+        "Finely chop the onion and parsley in a food processor. Transfer to a sieve and press out some of the juice with the back of a spoon.",
+        "Combine the chopped onion and parsley with the minced meat, melted butter, chili flakes, salt, and black pepper in a bowl. Knead for 2–3 minutes until completely homogeneous. Use the larger butter quantity for meat with about 15% fat and the smaller quantity for meat with about 20% fat.",
+        "Heat a barbecue, preferably charcoal. Alternatively, heat a large cast-iron grill pan on high.",
+        "Thread the tomato pieces and green peppers onto thin grill skewers.",
+        "Divide the meat mixture into four equal portions. Place a portion around the middle of a wide grill skewer and shape it into a long kebab. Keep the meat layer relatively thin and avoid trapping air against the skewer. Wet your hands periodically to prevent sticking.",
+        "Grill the kebabs and vegetables for 5–15 minutes, turning regularly, until the edges are browned and the meat is cooked through. Watch for smoke from dripping fat, especially if using a grill pan indoors, and ventilate properly.",
+        "Serve immediately with lavash or other flatbread, the grilled vegetables, and your choice of sumac onions, ezme, or chopped salad."
+    ]
 }
 ];
