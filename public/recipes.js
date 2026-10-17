@@ -63,5 +63,31 @@ window.GATHER_RECIPES = [
         "Combine everything: Return the cooked chicken and shrimp to the skillet. Add the drained pasta and toss until well coated in the sauce. Simmer for 1–2 minutes to let the flavors meld.",
         "Garnish and serve: Sprinkle with chopped parsley and extra Parmesan. Serve immediately."
     ]
+},
+{
+    "id": "taco-crescent-ring",
+    "title": "Taco Crescent Ring",
+    "category": "Dinner",
+    "icon": "CrescentRing",
+    "time": 45,
+    "timeLabel": "45 min total",
+    "servings": 8,
+    "description": "A golden crescent-dough ring filled with seasoned beef and melted cheddar, with your favorite taco toppings.",
+    "notes": "Prep time: 20 minutes. Total time: 45 minutes. Optional toppings can be served in the center or alongside the ring.",
+    "ingredients": [
+        "1 lb ground beef",
+        "1 packet (1 oz) taco seasoning mix",
+        "½ cup water",
+        "1 cup shredded cheddar cheese (4 oz)",
+        "2 cans (8 oz each) refrigerated original crescent rolls, 8-count each",
+        "Optional toppings: shredded lettuce, chopped tomatoes, sliced ripe olives, taco sauce or salsa"
+    ],
+    "steps": [
+        "Heat the oven to 375°F. Cook the beef in a 10-inch nonstick skillet until no longer pink. Drain and return to the skillet. Stir in the taco seasoning and ½ cup water. Simmer for 3–4 minutes, until slightly thickened. Transfer to a medium heatproof bowl, stir in the cheese, and let cool while preparing the dough.",
+        "Unroll both cans of dough and separate into 16 triangles. On a large, ungreased baking sheet, arrange the triangles in an overlapping ring with their short sides forming a 5-inch opening in the center. The points should face outward, like the sun.",
+        "Spoon the beef mixture onto the half of each triangle closest to the center of the ring.",
+        "Bring each triangle’s point up and over the filling, then tuck it beneath the bottom layer of dough to hold it in place. Repeat around the ring. A little filling may remain visible.",
+        "Bake for 20–25 minutes, until golden brown and the dough is thoroughly baked. Cool for 5–10 minutes before cutting into serving slices. Serve warm with the optional toppings."
+    ]
 }
 ];

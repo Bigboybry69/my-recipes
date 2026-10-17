@@ -1,6 +1,6 @@
 # Radtion 4011 — my recipes
 
-A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes Cream Cheese Chicken and Creamy Cajun Shrimp and Chicken Pasta. No account or API keys required.
+A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes Cream Cheese Chicken, Creamy Cajun Shrimp and Chicken Pasta, and Taco Crescent Ring. No account or API keys required.
 
 ## Run
 
