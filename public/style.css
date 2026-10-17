@@ -27,3 +27,8 @@ main{max-width:none;margin:0;padding:0}.terminal-bar{font-size:8px;letter-spacin
 .recipe-rewards{display:flex;flex-wrap:wrap;gap:8px 13px;font-size:9px;line-height:1.8;border-top:1px dashed var(--line);padding:11px 0;color:var(--green)}.recipe-rewards b{background:var(--green);color:var(--bg);padding:2px 4px;text-shadow:none}.recipe-rewards span:first-child{margin-right:auto}.detail-rewards{margin-top:19px;font-size:11px}.stats-help{font-size:10px}.detail-actions{display:flex;flex-direction:column;gap:10px}.detail-actions .secondary{padding:14px}.primary:disabled{opacity:.45;cursor:default}.xp-meter{margin-top:0}.xp-meter>span{display:flex;gap:8px;align-items:center}.xp-meter small{font-size:9px;white-space:nowrap}.xp-meter .power-track i{background:repeating-linear-gradient(90deg,var(--green) 0 7px,transparent 7px 9px)}@media(max-width:600px){.recipe-rewards{font-size:8px;gap:7px}.detail-rewards{font-size:9px}.xp-meter small{font-size:8px}}
 
 #stats-view{padding-bottom:14px}#stats-view .hero{border-bottom:0}#recipes-view>.collection-heading{margin-top:18px}nav{gap:6px}.nav{padding-left:10px;padding-right:10px}.device-screen{min-height:560px}@media(max-width:600px){nav{gap:9px}.nav{padding:8px 5px;font-size:12px;letter-spacing:1px}.device-screen{min-height:500px}#stats-view{padding-bottom:0}#recipes-view>.collection-heading{margin-top:16px}}
+
+/* Tint every screen element, including the mascot and modal, with the HP alert state. */
+body[data-health="warning"] :is(.device-screen,dialog,#toast){filter:hue-rotate(-32deg)}
+body[data-health="critical"] :is(.device-screen,dialog,#toast){filter:hue-rotate(-92deg)}
+#system-state{max-width:58%;text-align:right}.terminal-bar{gap:12px}#footer-state{line-height:1.5}

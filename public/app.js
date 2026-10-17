@@ -121,22 +121,29 @@ function updateHealth(now) {
   if (health.cycle !== cycle) health = { cycle, bonus: 0, eaten: [] };
   if (!Number.isFinite(health.bonus) || health.bonus < 0) health.bonus = 0;
   if (!Array.isArray(health.eaten)) health.eaten = [];
-  const hp = Math.min(100, energy.percent + health.bonus);
-  $('#power-fill').style.width = `${hp}%`;
-  $('#power-value').textContent = `${hp}/100`;
+  const { maxHP } = window.RecipeStats.collectionStats(recipes);
+  const status = window.RecipeStats.healthState(energy.percent, health.bonus, maxHP);
+  const hp = status.hp;
+  document.body.dataset.health = status.state;
+  const statusText = status.state === 'critical' ? 'CRITICAL HP // EAT SOON' : status.state === 'warning' ? 'LOW HP // MEAL RECOMMENDED' : 'ALL SYSTEMS OPERATIONAL';
+  $('#system-state').textContent = statusText;
+  $('#footer-state').textContent = statusText;
+  $('#power-fill').style.width = `${status.percent}%`;
+  $('#power-value').textContent = `${hp}/${maxHP}`;
+  $('#meal-power').setAttribute('aria-valuemax', maxHP);
   $('#meal-power').setAttribute('aria-valuenow', hp);
-  $('#meal-power').setAttribute('aria-valuetext', `${hp} health points. ${energy.name} at ${energy.time}.`);
+  $('#meal-power').setAttribute('aria-valuetext', `${hp} of ${maxHP} health points. ${energy.name} at ${energy.time}.`);
   const hours = Math.floor(energy.remaining / 60);
   const minutes = energy.remaining % 60;
   const countdown = [hours ? `${hours}H` : '', minutes ? `${minutes}M` : ''].filter(Boolean).join(' ');
   $('#meal-status').textContent = energy.remaining === 0
     ? `${energy.name} TIME // HP REFILLS NEXT MINUTE`
     : `NEXT: ${energy.name} ${energy.time} // ${countdown}`;
-  $('#meal-status').classList.toggle('low-power', hp <= 15);
+  $('#meal-status').classList.toggle('low-power', status.state !== 'normal');
   const eat = $('#eat-meal');
   if (eat) {
     const currentId = $('#recipe-detail').dataset.recipeId;
-    eat.disabled = hp >= 100 || health.eaten.includes(currentId);
+    eat.disabled = hp >= maxHP || health.eaten.includes(currentId);
     if (health.eaten.includes(currentId)) eat.textContent = 'MEAL LOGGED // HP RESTORED';
   }
 }
@@ -144,9 +151,9 @@ function eatMeal(recipe) {
   const now = new Date();
   updateHealth(now);
   if (health.eaten.includes(recipe.id)) { toast('Meal already logged for this mealtime.'); return; }
-  const base = window.mealPower(now).percent;
-  const before = Math.min(100, base + health.bonus);
-  const restored = Math.min(window.RecipeStats.recipeStats(recipe).hp, 100 - before);
+  const { maxHP } = window.RecipeStats.collectionStats(recipes);
+  const before = window.RecipeStats.healthState(window.mealPower(now).percent, health.bonus, maxHP).hp;
+  const restored = Math.min(window.RecipeStats.recipeStats(recipe).hp, maxHP - before);
   if (!restored) { toast('HP already full.'); return; }
   health.bonus += restored;
   health.eaten.push(recipe.id);
@@ -158,11 +165,12 @@ function eatMeal(recipe) {
 function renderXP() {
   const xp = window.RecipeStats.collectionStats(recipes);
   $('#xp-level').textContent = `LVL ${xp.level}`;
-  $('#xp-fill').style.width = `${xp.progress}%`;
-  $('#xp-value').textContent = `${xp.progress}/100`;
+  $('#xp-fill').style.width = `${xp.progress / xp.next * 100}%`;
+  $('#xp-value').textContent = `${xp.progress}/${xp.next}`;
+  $('#xp-bar').setAttribute('aria-valuemax', xp.next);
   $('#xp-bar').setAttribute('aria-valuenow', xp.progress);
-  $('#xp-bar').setAttribute('aria-valuetext', `Level ${xp.level}. ${xp.progress} of 100 XP to next level. ${xp.total} total XP.`);
-  $('#xp-status').textContent = `${xp.total} TOTAL XP // ADD RECIPES TO LEVEL UP`;
+  $('#xp-bar').setAttribute('aria-valuetext', `Level ${xp.level}. ${xp.progress} of ${xp.next} XP to next level. ${xp.total} total XP.`);
+  $('#xp-status').textContent = `${xp.total} TOTAL XP // MAX HP ${xp.maxHP} // +5 HP PER LEVEL`;
 }
 renderXP();
 updateClock();
