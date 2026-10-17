@@ -4,6 +4,7 @@ window.GATHER_RECIPES = [
     id: 'cream-cheese-chicken',
     title: 'Cream Cheese Chicken',
     category: 'Dinner',
+    icon: 'CrockpotChicken',
     time: null,
     timeLabel: 'Cook through + 30 min',
     servings: null,
