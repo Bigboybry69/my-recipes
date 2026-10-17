@@ -1,4 +1,4 @@
-# Gather — my recipes
+# Radtion 4011 — my recipes
 
 A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes six starter recipes. No account or API keys required.
 

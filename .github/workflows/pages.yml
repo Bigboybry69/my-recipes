@@ -1,4 +1,4 @@
-name: Deploy Gather to GitHub Pages
+name: Deploy Radtion to GitHub Pages
 
 on:
   push:
