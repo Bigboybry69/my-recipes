@@ -36,9 +36,9 @@ HP drains toward local breakfast (7:30 AM), lunch (12:30 PM), and dinner (6:30 P
 
 ## Family cookbooks
 
-The front screen lets everyone choose Dan, Demi, Stu, or Zoe. Anyone can view any family cookbook and switch characters at any time. Each member has their own recipe list, XP, level, and maximum HP. Existing recipes stay assigned to Dan and Demi; Stu and Zoe start with empty cookbooks. Shopping items remain one shared checklist in the current browser, so a grocery run can include dishes from several cookbooks.
+The front screen lets everyone choose Dan, Demi, Stu, Zoe, or Emre. Anyone can view any family cookbook and switch characters at any time. Each member has their own recipe list, XP, level, and maximum HP. Existing recipe assignments are preserved. Emre starts with an empty cookbook, level 1, and 0 XP. Shopping items remain one shared checklist in the current browser, so a grocery run can include dishes from several cookbooks.
 
-Assign recipes by setting `ownerId` in `public/recipes.js` to `dan`, `demi`, `stu`, or `zoe`. Recipe ownership is published with the site, never saved as a browser-only change. Recipes without an owner default to Dan for compatibility. Add new recipes and reassign existing ones through the assistant. Character names and artwork are configured in `public/family.js`.
+Assign recipes by setting `ownerId` in `public/recipes.js` to `dan`, `demi`, `stu`, `zoe`, or `emre`. Recipe ownership is published with the site, never saved as a browser-only change. Recipes without an owner default to Dan for compatibility. Add new recipes and reassign existing ones through the assistant. Character names and artwork are configured in `public/family.js`.
 
 On the first visit, the app opens at `#family`. Later launches restore the last selected character’s stats using the `radtion-last-member` browser preference. The Family button still opens the picker; explicit member links take priority over the remembered selection. Member screens use `#dan/stats`, `#demi/food`, or `#stu/items`, for example. Older `#stats`, `#food`, and `#items` links still open Dan’s cookbook. The iPhone home-screen icon remains the main green cook.
 
