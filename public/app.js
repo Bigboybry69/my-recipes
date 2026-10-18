@@ -11,7 +11,7 @@ function read(key, fallback) {
 }
 let shopping = read('gather-shopping', []);
 if (!Array.isArray(shopping) || !shopping.every(i => i && typeof i.id === 'string' && typeof i.text === 'string')) shopping = [];
-let category = 'All recipes';
+let proteinFilter = 'All proteins';
 let toastTimer;
 function toast(message) { $('#toast').textContent = message; $('#toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 3300); }
 function save() { try { localStorage.setItem('gather-shopping', JSON.stringify(shopping)); return true; } catch { storageAvailable = false; toast('Browser storage is unavailable or full. Your shopping checklist will only last for this visit.'); return false; } }
@@ -30,20 +30,27 @@ const foodPaths = {
   Breakfast: '<path d="M29 45c-12-24 3-33 31-33s43 9 31 33v35H29V45Z M38 46c-9-17 2-23 22-23s31 6 22 23v24H38V46Z"/><circle cx="60" cy="48" r="13"/><path d="M55 46h1m8 0h1 M53 55c5 4 10 4 15 0"/>',
   Dessert: '<path d="M23 72h76L84 34H37L23 72Z M23 73v9h76v-9 M37 34l47 0 M61 34V20 M61 18c-10-8 0-12 0-17 10 10 8 14 0 17Z M30 55c9-15 16 9 24-2s12 12 20 0 14 7 18 1"/>',
 };
-function foodIcon(category, icon) { return `<svg class="food-icon" viewBox="0 0 120 95" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${foodPaths[icon] || foodPaths[category] || foodPaths.Dinner}</svg>`; }
+function foodIcon(icon) { return `<svg class="food-icon" viewBox="0 0 120 95" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${foodPaths[icon] || foodPaths.Dinner}</svg>`; }
 function renderRecipes() {
   const query = $('#search').value.trim().toLowerCase();
   const assigned = memberRecipes();
-  const filtered = assigned.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...(r.searchTerms || []), ...r.ingredients].join(' ').toLowerCase().includes(query));
+  const filtered = assigned.filter(recipe => window.RecipeFilters.matchesRecipe(recipe, proteinFilter, query));
   $('#recipe-count').textContent = `${filtered.length} / ${assigned.length} RECORDS`;
-  $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'].map(name => {
-    const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
+  const options = ['All proteins', ...window.RecipeFilters.proteins.filter(protein => assigned.some(recipe => window.RecipeFilters.recipeProteins(recipe).includes(protein)))];
+  $('#proteins').replaceChildren(...options.map(name => {
+    const button = document.createElement('button');
+    button.className = 'chip' + (name === proteinFilter ? ' active' : '');
+    const count = assigned.filter(recipe => window.RecipeFilters.matchesRecipe(recipe, name, '')).length;
+    button.textContent = `${name} (${count})`;
+    button.setAttribute('aria-pressed', name === proteinFilter);
+    button.onclick = () => { proteinFilter = name; renderRecipes(); };
+    return button;
   }));
   $('#recipe-grid').replaceChildren(...filtered.map(recipe => {
     const stats = window.RecipeStats.recipeStats(recipe);
     const card = document.createElement('article'); card.className = 'recipe-card'; card.lang = recipe.lang || 'en';
     const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.setAttribute('aria-label', `View ${recipe.title}`);
-    artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span>${foodIcon(recipe.category, recipe.icon)}`; artwork.onclick = () => showRecipe(recipe.id);
+    artwork.innerHTML = `<span class="category-tag">${escapeHTML(window.RecipeFilters.recipeProteins(recipe).join(" + "))}</span>${foodIcon(recipe.icon)}`; artwork.onclick = () => showRecipe(recipe.id);
     const body = document.createElement('div'); body.className = 'card-body';
     body.innerHTML = `<button class="card-title">${escapeHTML(recipe.title)}</button><p>${escapeHTML(recipe.description || 'A favorite from your personal cookbook.')}</p><div class="recipe-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>+${stats.hp} HP</span><span>+${stats.xp} XP</span></div><div class="card-bottom"><div class="metadata"><span>${escapeHTML(recipe.timeLabel || `${recipe.time} MIN`)}</span>${recipe.servings ? `<span>QTY: ${recipe.servings}</span>` : ''}</div><button class="add-list">+ SUPPLIES</button></div>`;
     body.querySelector('.card-title').onclick = () => showRecipe(recipe.id); body.querySelector('.add-list').onclick = () => addRecipeToList(recipe);
@@ -51,7 +58,7 @@ function renderRecipes() {
   }));
   $('#empty').hidden = filtered.length > 0;
   $('#empty h3').textContent = assigned.length ? 'No recipes found' : `${currentMember().name}’s cookbook is waiting`;
-  $('#empty p').textContent = assigned.length ? 'Try another recipe name or ingredient.' : 'No recipes assigned yet. Switch characters to explore the family collection.';
+  $('#empty p').textContent = assigned.length ? 'Try another protein, recipe name, or ingredient.' : 'No recipes assigned yet. Switch characters to explore the family collection.';
 }
 function addRecipeToList(recipe) {
   let count = 0;
@@ -69,7 +76,7 @@ function showRecipe(id) {
   const stats = window.RecipeStats.recipeStats(r);
   $('#recipe-detail').dataset.recipeId = r.id;
   $('#recipe-detail').lang = r.lang || 'en';
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings}${r.lang === 'zh-Hant' ? ' 人份' : r.lang === 'tr' ? ' kişilik' : ' servings'}</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p>${fieldPhoto(r)}${r.notes ? `<p class="stats-help">${escapeHTML(r.notes)}</p>` : ''}<div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>FLAVOR BONUS +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. HP bonuses are just for fun; your health bar refills automatically an hour after each meal. XP comes from adding recipes to the collection.</p><h3 class="detail-section">${r.lang === 'zh-Hant' ? '食材' : r.lang === 'tr' ? 'Malzemeler' : 'Ingredients'}</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">${r.lang === 'zh-Hant' ? '料理步驟' : r.lang === 'tr' ? 'Hazırlanışı' : 'Preparation protocol'}</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(window.RecipeFilters.recipeProteins(r).join(" + "))}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings}${r.lang === 'zh-Hant' ? ' 人份' : r.lang === 'tr' ? ' kişilik' : ' servings'}</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p>${fieldPhoto(r)}${r.notes ? `<p class="stats-help">${escapeHTML(r.notes)}</p>` : ''}<div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>FLAVOR BONUS +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. HP bonuses are just for fun; your health bar refills automatically an hour after each meal. XP comes from adding recipes to the collection.</p><h3 class="detail-section">${r.lang === 'zh-Hant' ? '食材' : r.lang === 'tr' ? 'Malzemeler' : 'Ingredients'}</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">${r.lang === 'zh-Hant' ? '料理步驟' : r.lang === 'tr' ? 'Hazırlanışı' : 'Preparation protocol'}</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
   updateHealth(new Date());
   $('#recipe-dialog').showModal();
@@ -115,7 +122,7 @@ function selectMember(id, view = 'stats', updateLocation = true) {
   selectedMember = id;
   try { localStorage.setItem('radtion-last-member', JSON.stringify(id)); }
   catch { storageAvailable = false; }
-  category = 'All recipes';
+  proteinFilter = 'All proteins';
   $('#search').value = '';
   $('#cookbook-owner').textContent = `${currentMember().name}’S`;
   $('#character-name').textContent = `${currentMember().name.toUpperCase()} // ${currentMember().role}`;
