@@ -47,3 +47,6 @@ body[data-health="critical"] :is(.device-screen,dialog,#toast){filter:hue-rotate
 .recipe-card:lang(zh-Hant),#recipe-detail:lang(zh-Hant){font-family:'Courier New','PingFang TC','Microsoft JhengHei',monospace}.recipe-card:lang(zh-Hant) .card-title{line-height:1.6;letter-spacing:.5px}#recipe-detail:lang(zh-Hant) .steps{line-height:2}#recipe-detail:lang(zh-Hant) .ingredient{line-height:1.8}.recipe-card:lang(zh-Hant) .metadata{white-space:normal;line-height:1.7}
 
 .family-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:13px}.family-card{flex:0 1 calc((100% - 26px)/3);min-width:0}@media(max-width:900px){.family-grid{gap:12px}.family-card{flex-basis:calc((100% - 12px)/2)}}@media(max-width:600px){.family-grid{gap:10px}.family-card{flex-basis:calc((100% - 10px)/2)}#member-switcher{justify-content:center}.member-button{min-width:47px;flex-wrap:wrap;gap:2px}.member-button img{width:24px;height:29px}.member-button span{font-size:9px}}
+
+/* Keep short protein lists grouped on the right; long lists wrap without clipping. */
+#proteins{justify-content:flex-end;gap:6px;flex-wrap:wrap;overflow:visible}
