@@ -44,4 +44,4 @@ On the first visit, the app opens at `#family`. Later launches restore the last 
 
 ## Food photos
 
-Recipe details include a collapsed **View food photo** field-photo panel. The natural-color serving illustrations use a worn paper frame, tape corners, and subtle scanlines. Photos are generated illustrations, labeled in the caption; they are not photos of the family's actual meals. Recipe cards retain their green line icons. A recipe without a `photo` field simply omits the panel. All images are bundled with the site and require no external image service.
+Recipe details include an initially expanded **View food photo** field-photo panel that can be collapsed. The natural-color serving illustrations use a worn paper frame, tape corners, and subtle scanlines. Photos are generated illustrations, labeled in the caption; they are not photos of the family's actual meals. Recipe cards retain their green line icons. A recipe without a `photo` field simply omits the panel. All images are bundled with the site and require no external image service.

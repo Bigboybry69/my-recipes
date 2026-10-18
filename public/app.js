@@ -60,7 +60,7 @@ function addRecipeToList(recipe) {
 }
 function fieldPhoto(recipe) {
   if (!recipe.photo) return '';
-  return `<details class="field-photo-panel"><summary><span class="photo-toggle" aria-hidden="true"></span>VIEW FOOD PHOTO <small>// FIELD ARCHIVE</small></summary><figure class="field-photo-frame"><div class="field-photo-window"><img class="field-photo-image" src="${escapeHTML(recipe.photo)}" alt="Generated serving illustration of ${escapeHTML(recipe.title)}" loading="lazy" decoding="async"></div><figcaption>FIELD PHOTO / ${escapeHTML(recipe.title)}<span>AI-GENERATED SERVING ILLUSTRATION</span></figcaption></figure></details>`;
+  return `<details class="field-photo-panel" open><summary><span class="photo-toggle" aria-hidden="true"></span>VIEW FOOD PHOTO <small>// FIELD ARCHIVE</small></summary><figure class="field-photo-frame"><div class="field-photo-window"><img class="field-photo-image" src="${escapeHTML(recipe.photo)}" alt="Generated serving illustration of ${escapeHTML(recipe.title)}" loading="lazy" decoding="async"></div><figcaption>FIELD PHOTO / ${escapeHTML(recipe.title)}<span>AI-GENERATED SERVING ILLUSTRATION</span></figcaption></figure></details>`;
 }
 function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
