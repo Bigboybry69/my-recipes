@@ -1,7 +1,7 @@
 const $ = (selector) => document.querySelector(selector);
 const recipes = window.GATHER_RECIPES;
 let selectedMember = 'dan';
-function memberRecipes() { return window.Family.recipesFor(recipes, selectedMember); }
+function memberRecipes() { return window.Family.recipesFor(recipes, cookbookMember); }
 function currentMember() { return window.Family.members.find(member => member.id === selectedMember); }
 
 let storageAvailable = true;
@@ -9,6 +9,11 @@ function read(key, fallback) {
   try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
   catch { storageAvailable = false; return fallback; }
 }
+const rememberedMember = read('radtion-last-member', null);
+if (window.Family.members.some(member => member.id === rememberedMember)) selectedMember = rememberedMember;
+let cookbookMember = selectedMember;
+function cookbookOwner() { return window.Family.members.find(member => member.id === cookbookMember); }
+function statsRecipes() { return window.Family.recipesFor(recipes, selectedMember); }
 let shopping = read('gather-shopping', []);
 if (!Array.isArray(shopping) || !shopping.every(i => i && typeof i.id === 'string' && typeof i.text === 'string')) shopping = [];
 let proteinFilter = 'All proteins';
@@ -57,7 +62,7 @@ function renderRecipes() {
     card.append(artwork, body); return card;
   }));
   $('#empty').hidden = filtered.length > 0;
-  $('#empty h3').textContent = assigned.length ? 'No recipes found' : `${currentMember().name}’s cookbook is waiting`;
+  $('#empty h3').textContent = assigned.length ? 'No recipes found' : `${cookbookOwner().name}’s cookbook is waiting`;
   $('#empty p').textContent = assigned.length ? 'Try another protein, recipe name, or ingredient.' : 'No recipes assigned yet. Switch characters to explore the family collection.';
 }
 function addRecipeToList(recipe) {
@@ -112,15 +117,25 @@ function renderFamily() {
     const button = document.createElement('button');
     button.className = 'member-button';
     button.setAttribute('aria-label', `Open ${member.name}’s cookbook`);
-    button.setAttribute('aria-pressed', member.id === selectedMember);
+    button.setAttribute('aria-pressed', member.id === cookbookMember);
     button.innerHTML = `<img src="${member.image}" alt="" width="32" height="38"><span>${escapeHTML(member.name)}</span>`;
-    button.onclick = () => selectMember(member.id, activeView === 'family' ? 'stats' : activeView);
+    button.onclick = () => selectCookbook(member.id);
     return button;
   }));
+}
+function selectCookbook(id, updateLocation = true) {
+  cookbookMember = window.Family.members.some(member => member.id === id) ? id : selectedMember;
+  proteinFilter = 'All proteins';
+  $('#search').value = '';
+  $('#cookbook-owner').textContent = `${cookbookOwner().name}’S`;
+  if ($('#recipe-dialog').open) $('#recipe-dialog').close();
+  renderFamily(); renderRecipes();
+  switchView('recipes', updateLocation);
 }
 function selectMember(id, view = 'stats', updateLocation = true) {
   if (!window.Family.members.some(member => member.id === id)) id = 'dan';
   selectedMember = id;
+  cookbookMember = id;
   try { localStorage.setItem('radtion-last-member', JSON.stringify(id)); }
   catch { storageAvailable = false; }
   proteinFilter = 'All proteins';
@@ -135,6 +150,7 @@ function selectMember(id, view = 'stats', updateLocation = true) {
 function switchView(view, updateLocation = true) {
   if (view !== 'family' && !Object.hasOwn(viewHashes, view)) view = 'family';
   activeView = view;
+  document.body.dataset.view = view;
   updateHealth(new Date());
   $('#family-view').hidden = view !== 'family';
   $('#member-toolbar').hidden = view === 'family';
@@ -148,16 +164,19 @@ function switchView(view, updateLocation = true) {
     if (active) tab.setAttribute('aria-current', 'page');
     else tab.removeAttribute('aria-current');
   }
-  const hash = view === 'family' ? '#family' : `#${selectedMember}/${viewHashes[view]}`;
+  const hash = view === 'family' ? '#family' : `#${view === 'recipes' ? cookbookMember : selectedMember}/${viewHashes[view]}`;
   if (updateLocation && location.hash !== hash) location.hash = hash;
 }
 function viewFromLocation(restoreLast = false) {
   const hash = location.hash.slice(1);
-  if (restoreLast && (!hash || hash === 'family' || hash === 'stats')) {
-    const saved = read('radtion-last-member', null);
-    if (window.Family.members.some(member => member.id === saved)) {
-      history.replaceState(null, '', `#${saved}/stats`);
-      selectMember(saved, 'stats', false);
+  if (restoreLast) {
+    const initialMember = hash.split('/')[0];
+    const hasRemembered = window.Family.members.some(member => member.id === rememberedMember);
+    const fallback = window.Family.members.some(member => member.id === initialMember) ? initialMember : 'dan';
+    selectMember(hasRemembered ? rememberedMember : fallback, 'family', false);
+    if (hasRemembered && (!hash || hash === 'family' || hash === 'stats')) {
+      history.replaceState(null, '', `#${selectedMember}/stats`);
+      switchView('stats', false);
       return;
     }
   }
@@ -166,7 +185,11 @@ function viewFromLocation(restoreLast = false) {
   const member = second ? first : 'dan';
   const tab = second || first;
   const view = Object.keys(viewHashes).find(name => viewHashes[name] === tab);
-  if (view) selectMember(member, view, false);
+  if (view === 'recipes') selectCookbook(member, false);
+  else if (view) {
+    switchView(view, false);
+    history.replaceState(null, '', `#${selectedMember}/${viewHashes[view]}`);
+  }
   else switchView('family', false);
 }
 $('#family-home').onclick = () => switchView('family');
@@ -199,7 +222,7 @@ function updateClock() {
 }
 function updateHealth(now) {
   const energy = window.mealPower(now);
-  const { maxHP } = window.RecipeStats.collectionStats(memberRecipes());
+  const { maxHP } = window.RecipeStats.collectionStats(statsRecipes());
   const status = window.RecipeStats.healthState(energy.percent, maxHP);
   const hp = status.hp;
   document.body.dataset.health = activeView === 'family' ? 'normal' : status.state;
@@ -221,7 +244,7 @@ function updateHealth(now) {
   $('#meal-status').classList.toggle('low-power', status.state !== 'normal');
 }
 function renderXP() {
-  const xp = window.RecipeStats.collectionStats(memberRecipes());
+  const xp = window.RecipeStats.collectionStats(statsRecipes());
   $('#xp-level').textContent = `LVL ${xp.level}`;
   $('#xp-fill').style.width = `${xp.progress / xp.next * 100}%`;
   $('#xp-value').textContent = `${xp.progress}/${xp.next}`;
