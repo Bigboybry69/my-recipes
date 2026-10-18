@@ -40,3 +40,8 @@ test('HP respects the floor, level maximum, and percentage-based warning thresho
   assert.equal(healthState(29, 100).state, 'critical');
   assert.equal(healthState(0, 105).state, 'critical');
 });
+
+test('instructions forbidding kneading do not add an advanced technique bonus', () => {
+  const recipe = { ingredients: Array(5).fill('ingredient'), steps: ['Mix.', 'Add butter.', 'Add water.', 'DO NOT knead the dough.'] };
+  assert.equal(require('../public/recipe-stats').recipeStats(recipe).complexity, 3);
+});

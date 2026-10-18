@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const { proteins, recipeProteins, matchesRecipe } = require('../public/recipe-filters');
+const { proteins, recipeProteins, recipeTags, matchesRecipe } = require('../public/recipe-filters');
 const context = { window: {} };
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/recipes.js'), 'utf8'), context);
 const recipes = context.window.GATHER_RECIPES;
@@ -26,10 +26,21 @@ test('protein filters combine with Chinese and English ingredient searches', () 
 });
 test('every recipe has valid tags; unknown ground meat is not assumed to be beef', () => {
   for (const recipe of recipes) {
-    assert.ok(recipe.proteins.length > 0, recipe.id);
+    assert.ok(recipeTags(recipe).length > 0, recipe.id);
     assert.ok(recipe.proteins.every(tag => proteins.includes(tag)), recipe.id);
   }
   assert.deepEqual(recipeProteins(byId('emre-adana-kebap-lavas')), ['Ground Meat']);
   assert.equal(matchesRecipe(byId('emre-adana-kebap-lavas'), 'Beef', ''), false);
   assert.deepEqual(recipeProteins({}), ['Other']);
+});
+
+test('Ben’s pie crust is a dessert, without a protein classification', () => {
+  const crust = byId('butter-pie-crust');
+  assert.equal(crust.ownerId, 'ben');
+  assert.equal(crust.yield, '2 crusts');
+  assert.deepEqual(recipeProteins(crust), []);
+  assert.deepEqual(recipeTags(crust), ['Dessert']);
+  assert.equal(matchesRecipe(crust, 'Dessert', 'butter'), true);
+  assert.equal(matchesRecipe(crust, 'Chicken', ''), false);
+  assert.equal(matchesRecipe(crust, 'All recipes', 'pie crust'), true);
 });

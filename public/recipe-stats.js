@@ -1,6 +1,6 @@
 (function (root) {
   function recipeStats(recipe) {
-    const instructions = recipe.steps.join(' ').toLowerCase();
+    const instructions = recipe.steps.join(' ').toLowerCase().replace(/\b(?:do not|don’t|don't|never)\s+knead\b/g, '');
     const advanced = [['knead', '揉麵', '揉捏', 'yoğur'], ['temper', '調溫'], ['laminate', '折疊起酥'], ['caramelize', '焦糖化'], ['deep-fry', '油炸', '炸至'], ['ferment', '發酵', 'mayalan'], ['sous vide', '舒肥', '低溫慢煮']].filter(words => words.some(word => instructions.includes(word))).length;
     const complexity = Math.min(10, 1 + Math.floor(recipe.ingredients.length / 5) + Math.floor(recipe.steps.length / 4) + advanced);
     return { complexity, hp: complexity * 10, xp: complexity * 25 };

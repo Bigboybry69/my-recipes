@@ -350,5 +350,32 @@ window.GATHER_RECIPES = [
         "Kebap şeklini verin. Döküm tavada veya normal tavada tamamen pişene kadar pişirin.",
         "Lavaş ekmeği arasında domates, biber ve soğanla servis edin. Afiyet olsun!"
     ]
+},
+{
+  "id": "butter-pie-crust",
+  "title": "Butter Pie Crust",
+  "ownerId": "ben",
+  "proteins": [],
+  "categories": [
+    "Dessert"
+  ],
+  "icon": "PieCrust",
+  "yield": "2 crusts",
+  "timeLabel": "1 hr chilling + prep",
+  "description": "An all-butter pie crust with tender, flaky layers. Makes two crusts for your favorite pies.",
+  "notes": "Chill for 1 hour before using. This recipe makes unbaked dough; follow your pie recipe for rolling and baking. Measure flour by spooning it into the measuring cup and leveling it off, without packing.",
+  "ingredients": [
+    "2½ cups all-purpose flour, plus more for dusting",
+    "½ tablespoon granulated sugar",
+    "½ teaspoon sea salt",
+    "½ lb cold unsalted butter (2 sticks), diced into ¼-inch pieces",
+    "7–8 tablespoons ice water"
+  ],
+  "steps": [
+    "Place flour, sugar, and salt in the bowl of a food processor and pulse a few times to combine, or stir together by hand.",
+    "Add the cold diced butter and pulse until coarse crumbs form with some pea-sized pieces, then stop mixing. The mixture should remain dry and powdery. You can also work in the butter by hand.",
+    "Add 7 tablespoons ice water and pulse just until moist clumps or small balls form. Press a piece of dough between your fingertips: if it sticks together, there is enough water. If not, add more ice water 1 teaspoon at a time, using 7–8 tablespoons total. Avoid adding too much or the dough will become sticky and difficult to roll out.",
+    "Transfer to a clean work surface and gather into a ball. It should not be smooth; DO NOT knead the dough. Divide in half and flatten into 2 disks. Cover with plastic wrap and refrigerate for 1 hour before using in a recipe that calls for pie crust."
+  ]
 }
 ];
