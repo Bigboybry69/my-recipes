@@ -360,6 +360,9 @@ window.GATHER_RECIPES = [
     "Dessert"
   ],
   "icon": "PieCrust",
+  "photo": "./food-butter-pie-crust.jpg",
+  "photoAlt": "Golden butter pie crust with a crimped edge in a white pie dish",
+  "photoCaption": "BUTTER PIE CRUST / RECIPE PHOTO",
   "yield": "2 crusts",
   "timeLabel": "1 hr chilling + prep",
   "description": "An all-butter pie crust with tender, flaky layers. Makes two crusts for your favorite pies.",
