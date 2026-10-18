@@ -7,9 +7,11 @@
   const storageKey = 'radtion-timer';
   let timer = model.idle();
   let context;
-  let alarmLoop;
+  let alarmSource;
+  let audioBuffer;
+  let audioLoad;
+  let soundError = false;
   let testTimeout;
-  let voices = [];
   try { timer = model.restore(JSON.parse(localStorage.getItem(storageKey))); } catch { /* Storage is optional. */ }
   function save() {
     try { localStorage.setItem(storageKey, JSON.stringify(timer)); } catch { /* Countdown still works for this visit. */ }
@@ -19,37 +21,44 @@
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) throw new Error('Audio unavailable');
       context ||= new AudioContext();
-      await context.resume();
+      // Resume directly from the tap so mobile browsers can unlock audio.
+      const resumed = context.resume();
+      if (!audioLoad) {
+        audioLoad = fetch('./incident-alarm.mp3').then(response => {
+          if (!response.ok) throw new Error('Alarm could not load');
+          return response.arrayBuffer();
+        }).then(bytes => context.decodeAudioData(bytes)).then(buffer => { audioBuffer = buffer; })
+          .catch(error => { audioLoad = null; throw error; });
+      }
+      await Promise.all([resumed, audioLoad]);
+      soundError = false;
       render();
       if (timer.state === 'done') soundAlarm();
-    } catch { $('#timer-sound-status').textContent = 'Sound unavailable in this browser. Watch for the red alert.'; }
+    } catch {
+      soundError = true;
+      render();
+    }
   }
   function stopSound() {
-    clearInterval(alarmLoop); alarmLoop = null;
     clearTimeout(testTimeout);
-    voices.forEach(voice => { try { voice.stop(); } catch { /* Already stopped. */ } });
-    voices = [];
+    if (alarmSource) {
+      alarmSource.stop();
+      alarmSource.disconnect();
+      alarmSource = null;
+    }
   }
-  function pulse() {
-    if (!context || context.state !== 'running') return;
-    const start = context.currentTime;
-    [740, 520].forEach((frequency, i) => {
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.type = 'triangle'; oscillator.frequency.value = frequency;
-      gain.gain.setValueAtTime(0, start + i * .4);
-      gain.gain.linearRampToValueAtTime(.18, start + i * .4 + .03);
-      gain.gain.setValueAtTime(.18, start + i * .4 + .28);
-      gain.gain.linearRampToValueAtTime(0, start + i * .4 + .36);
-      oscillator.connect(gain); gain.connect(context.destination);
-      voices.push(oscillator);
-      oscillator.onended = () => { voices = voices.filter(v => v !== oscillator); oscillator.disconnect(); gain.disconnect(); };
-      oscillator.start(start + i * .4); oscillator.stop(start + i * .4 + .38);
-    });
+  function playAudio() {
+    if (alarmSource || !audioBuffer || context?.state !== 'running') return;
+    alarmSource = context.createBufferSource();
+    alarmSource.buffer = audioBuffer;
+    alarmSource.loop = true;
+    alarmSource.connect(context.destination);
+    alarmSource.start();
   }
   function soundAlarm() {
-    if (alarmLoop || !$('#timer-sound').checked || context?.state !== 'running') return;
-    pulse(); alarmLoop = setInterval(pulse, 1200);
+    if (!$('#timer-sound').checked) return;
+    clearTimeout(testTimeout);
+    playAudio();
   }
   function render() {
     const active = timer.state !== 'idle';
@@ -67,7 +76,7 @@
     document.body.classList.toggle('timer-alarm', done);
     const alert = done ? 'Cooking timer finished. Check your food.' : '';
     if ($('#timer-alert').textContent !== alert) $('#timer-alert').textContent = alert;
-    $('#timer-sound-status').textContent = !$('#timer-sound').checked ? 'Sound off. Red alert still enabled.' : context?.state === 'running' ? 'Sound ready. Keep your phone volume up.' : 'Tap TEST / ENABLE SOUND to enable the alarm on this visit.';
+    $('#timer-sound-status').textContent = !$('#timer-sound').checked ? 'Sound off. Red alert still enabled.' : soundError ? 'Could not load alarm. Tap TEST / ENABLE SOUND to retry online. Red alert is still enabled.' : context?.state === 'running' && audioBuffer ? 'Sound ready. Keep your phone volume up.' : 'Tap TEST / ENABLE SOUND to enable the alarm on this visit.';
   }
   function open(label) {
     if (timer.state === 'idle' && typeof label === 'string') form.elements.namedItem('label').value = label.slice(0, 100);
@@ -103,7 +112,7 @@
   $('#timer-stop').onclick = () => { timer = model.idle(); save(); stopSound(); render(); };
   $('#timer-test').onclick = async () => {
     await enableSound();
-    if (timer.state !== 'done') { stopSound(); pulse(); testTimeout = setTimeout(stopSound, 1000); }
+    if (timer.state !== 'done' && $('#timer-sound').checked) { stopSound(); playAudio(); testTimeout = setTimeout(stopSound, 3000); }
   };
   $('#timer-sound').onchange = () => {
     if (!$('#timer-sound').checked) stopSound();
