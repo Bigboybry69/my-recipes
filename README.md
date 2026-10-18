@@ -1,6 +1,6 @@
 # Radtion 4011 — my recipes
 
-A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes Cream Cheese Chicken, Creamy Cajun Shrimp and Chicken Pasta, Taco Crescent Ring, Adana Kebab, and Pork Dumplings. No account or API keys required.
+A phone-friendly personal cookbook with recipe search, ingredient search, and a shopping checklist. Includes Cream Cheese Chicken, Creamy Cajun Shrimp and Chicken Pasta, Taco Crescent Ring, Adana Kebab, Pork Dumplings, and Taiwanese Three Cup Chicken. No account or API keys required.
 
 ## Run
 
@@ -44,4 +44,4 @@ On the first visit, the app opens at `#family`. Later launches restore the last 
 
 ## Food photos
 
-Recipe details include an initially expanded **View food photo** field-photo panel that can be collapsed. The natural-color serving illustrations use a worn paper frame, tape corners, and subtle scanlines. Photos are generated illustrations, labeled in the caption; they are not photos of the family's actual meals. Recipe cards retain their green line icons. A recipe without a `photo` field simply omits the panel. All images are bundled with the site and require no external image service.
+Recipe details include an initially expanded **View food photo** field-photo panel that can be collapsed. The natural-color serving illustrations use a worn paper frame, tape corners, and subtle scanlines. Photos are labeled in the caption as generated illustrations or original recipe photos extracted from supplied PDFs; they are not photos of the family's actual meals. Recipe cards retain their green line icons. A recipe without a `photo` field simply omits the panel. All images are bundled with the site and require no external image service.

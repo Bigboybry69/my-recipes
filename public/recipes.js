@@ -162,5 +162,40 @@ window.GATHER_RECIPES = [
         "Line a bamboo or metal steamer with parchment. Arrange the dumplings so they do not touch, working in batches as needed. Cover and steam over simmering water for about 15 minutes, until the pork is cooked through.",
         "Serve the dumplings hot with your preferred dipping sauce."
     ]
+},
+{
+    "id": "taiwanese-three-cup-chicken",
+    "title": "Taiwanese Three Cup Chicken",
+    "category": "Dinner",
+    "ownerId": "dan",
+    "icon": "ThreeCupChicken",
+    "photo": "./food-three-cup-chicken.jpg",
+    "photoCaption": "RECIPE PHOTO FROM YOUR PDF",
+    "photoAlt": "Taiwanese Three Cup Chicken with glossy soy sauce and Thai basil, served over white rice",
+    "time": 18,
+    "timeLabel": "18 min total",
+    "servings": 4,
+    "description": "San Bei Ji: chicken braised in a sweet-savory soy sauce with plenty of garlic, ginger, toasted sesame oil, and Thai basil.",
+    "notes": "Prep: 8 minutes. Cook: 10 minutes. Servings are based on the recipe’s nutrition note for 4 servings. Chicken thigh stays juicier; if using breast, reduce the braise to about 3 minutes. Regular basil or 2 green onion stems cut into 2-inch lengths can replace Thai basil. Do not replace light soy sauce with dark soy sauce; if dark soy is unavailable, use more light soy. For a non-alcoholic version, the recipe notes specify ¼ cup low-sodium chicken stock instead of the cooking wine. Leftovers keep 3–4 days in the fridge.",
+    "ingredients": [
+        "1½ tbsp neutral oil (canola, vegetable, or peanut)",
+        "600 g boneless, skinless chicken thighs, cut into 1-inch pieces",
+        "6 slices ginger, about ⅛ inch thick",
+        "1½ tbsp finely minced garlic (about 5–6 cloves)",
+        "2 dried red chilies (optional; or ¼ tsp dried chili flakes)",
+        "1½ tbsp toasted sesame oil",
+        "1 cup lightly packed Thai basil leaves (or regular basil)",
+        "2 tbsp light soy sauce or all-purpose soy sauce",
+        "2 tsp dark soy sauce",
+        "2 tsp white sugar",
+        "2 tbsp Chinese cooking wine or Taiwanese rice wine (mijiu); or ¼ cup low-sodium chicken stock for the non-alcoholic option",
+        "White rice, for serving"
+    ],
+    "steps": [
+        "Mix the light soy sauce, dark soy sauce, sugar, and cooking wine in a small bowl. Set aside.",
+        "Heat the neutral oil in a nonstick pan over medium-low heat. Add the ginger and chilies and stir for 30 seconds. Increase the heat to high, add the chicken, and stir until its surface turns from pink to white; it will still be raw inside. Add the garlic and stir for another 30 seconds.",
+        "Pour in the sauce, scraping all the sugar out of the bowl. Once bubbling, reduce the heat to medium-high or medium so it simmers fairly rapidly, but not wildly. Simmer for about 5 minutes, stirring to coat the chicken, until it is cooked through and the sauce reduces from watery to a thin syrup. If the sauce reduces too quickly, add a splash of water.",
+        "Stir in the toasted sesame oil, then the Thai basil leaves until wilted, about 15 seconds. Serve over rice with the syrup from the pan; the sauce is intensely flavored, so only a little is needed."
+    ]
 }
 ];
