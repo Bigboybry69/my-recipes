@@ -294,5 +294,61 @@ window.GATHER_RECIPES = [
         "將炒鍋中的材料倒回牛肉高湯，以小火煮約 1 小時，再關火加蓋、不要攪動，浸泡至入味。若牛肉仍不夠軟，可延長燉煮。放涼後若不立即食用，請儘快冷藏，避免長時間置於室溫；食用前再次充分加熱，試味後再視需要加鹽。",
         "另煮麵條及青菜，盛入碗中，加入熱牛肉湯、牛肉片與蔥花；可依喜好搭配炒過的酸菜。"
     ]
+},
+{
+    "id": "emre-adana-kebap-lavas",
+    "title": "Adana Kebap ve Ev Yapımı Lavaş",
+    "lang": "tr",
+    "category": "Dinner",
+    "ownerId": "emre",
+    "icon": "Kebab",
+    "photo": "./food-emre-adana-kebap.jpg",
+    "photoCaption": "PDF’DEN ORİJİNAL TARİF FOTOĞRAFI",
+    "photoAlt": "Ev yapımı lavaş üzerinde Adana kebap, közlenmiş biber, domates ve soğan",
+    "time": 140,
+    "timeLabel": "2 sa 20 dk",
+    "servings": "4–6",
+    "description": "Tavada pişirilen ev yapımı Adana kebap ve yumuşacık mayalı lavaş. Domates, biber ve soğanla servis edilir.",
+    "notes": "Hazırlık: 2 saat. Pişirme: 20 dakika. Tarif 4–6 kişiliktir. ABD ölçüleri yaklaşık verilmiştir: 500 g kıyma yaklaşık 1 lb 2 oz; 100 g kuyruk yağı yaklaşık 3½ oz. Kaynakta alternatif olarak 2 yemek kaşığı tereyağı verilmiştir; bunlar eşit ağırlıkta değildir. Kaynak bardak hacmini belirtmediği için 1 Türk su bardağı yaklaşık 200 mL varsayılmıştır; un kontrollü eklenmelidir. Yemek kaşığı tablespoon, çay kaşığı teaspoon, tatlı kaşığı yaklaşık 2 US teaspoons olarak gösterilmiştir; ev kaşıkları değişebilir. Maya paketinin gramajı kaynakta belirtilmemiştir; ABD paketleri farklı büyüklükte olabilir. Kıymanın et türü kaynakta belirtilmemiştir. Kebap harcını dinlendirmek şişten düşmesini önlemeye yardımcı olur.",
+    "searchTerms": [
+        "Adana kebap",
+        "Turkish kebab",
+        "homemade lavash",
+        "flatbread"
+    ],
+    "ingredients": [
+        "Kıyma — Ground meat: about 1 lb 2 oz",
+        "Soğan — Onion: 1",
+        "Kuyruk yağı veya tereyağı — Lamb tail fat: about 3½ oz OR butter: 2 tablespoons (alternatives in the source)",
+        "Sarımsak — Garlic: 2 cloves",
+        "Kapya biber — Long sweet red pepper: 1",
+        "Biber salçası — Red pepper paste: about 1 teaspoon",
+        "Tuz — Salt: to taste",
+        "Karabiber — Ground black pepper: to taste",
+        "Pul biber — Red pepper flakes: optional, to taste",
+        "Lavaş｜Ilık su — Warm water: about 1⅔ US cups",
+        "Lavaş｜Yoğurt — Plain yogurt: 3 tablespoons",
+        "Lavaş｜Zeytinyağı veya sıvı yağ — Olive oil or other cooking oil: 2 tablespoons",
+        "Lavaş｜İnstant maya — Instant yeast: 1 packet (packet weight not specified)",
+        "Lavaş｜Tuz — Salt: about 2 teaspoons",
+        "Lavaş｜Şeker — Sugar: about 2 teaspoons",
+        "Lavaş｜Un — Flour: about 3⅓ US cups to start, plus more only as needed for the dough",
+        "Servis｜Domates — Tomatoes: as desired, for serving",
+        "Servis｜Biber — Peppers: as desired, for serving",
+        "Servis｜Soğan — Onion: as desired, for serving"
+    ],
+    "steps": [
+        "Soğanı ve kapya biberi rondodan geçirin veya çok ince doğrayın.",
+        "Soğan ve biberin suyunu iyice sıkıp kıymaya ekleyin. Sarımsağı, kuyruk yağını veya tereyağını ve biber salçasını da kebap harcına karıştırın.",
+        "Tuz, karabiber ve isterseniz pul biber ekleyip harcı güzelce yoğurun. Dinlenmesi için buzdolabına kaldırın.",
+        "Lavaş için un dışındaki bütün malzemeleri derin bir kapta birleştirin: ılık su, yoğurt, yağ, instant maya, tuz ve şeker.",
+        "Unu kontrollü ekleyerek kıvamlı bir hamur yoğurun. Hamuru yaklaşık yarım saat mayalanmaya bırakın.",
+        "Mayalanan hamuru 10–12 eşit parçaya bölün.",
+        "Her parçayı yuvarlak açın; tavada her iki yüzünü de pişirin.",
+        "Pişen lavaşları yumuşak kalmaları için temiz bir bez veya örtüye sarın.",
+        "Dinlenen kıymadan yumruk büyüklüğünde parçalar alıp şişe geçirin. Şiş yoksa tahta çubuk kullanabilirsiniz.",
+        "Kebap şeklini verin. Döküm tavada veya normal tavada tamamen pişene kadar pişirin.",
+        "Lavaş ekmeği arasında domates, biber ve soğanla servis edin. Afiyet olsun!"
+    ]
 }
 ];

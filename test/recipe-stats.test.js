@@ -23,6 +23,13 @@ test('English and Chinese instructions receive the same technique score', () => 
   assert.deepEqual(chinese, english);
   assert.deepEqual(bilingual, english);
 });
+test('Turkish kneading and proofing count like their English equivalents', () => {
+  const base = { ingredients: Array(19).fill('ingredient') };
+  const english = recipeStats({ ...base, steps: Array(11).fill('knead the dough and ferment') });
+  const turkish = recipeStats({ ...base, steps: Array(11).fill('Hamuru yoğurun ve mayalanmaya bırakın') });
+  assert.deepEqual(turkish, english);
+  assert.equal(turkish.complexity, 8);
+});
 test('HP respects the floor, level maximum, and percentage-based warning thresholds', () => {
   assert.equal(healthState(0, 100).hp, 18);
   assert.equal(healthState(1, 105).hp, 18);
