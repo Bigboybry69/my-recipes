@@ -137,6 +137,7 @@ function switchView(view, updateLocation = true) {
   updateHealth(new Date());
   $('#family-view').hidden = view !== 'family';
   $('#member-toolbar').hidden = view === 'family';
+  $('#member-switcher').hidden = view !== 'recipes';
   $('header nav').hidden = view === 'family';
   for (const name of Object.keys(viewHashes)) {
     const active = name === view;
