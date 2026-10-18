@@ -4,7 +4,7 @@ window.GATHER_RECIPES = [
     id: 'cream-cheese-chicken',
     title: 'Cream Cheese Chicken',
     category: 'Dinner',
-    ownerId: 'dan',
+    ownerId: 'demi',
     icon: 'CrockpotChicken',
     time: 90,
     timeLabel: '1 hr 30 min',
