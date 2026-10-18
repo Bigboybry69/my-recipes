@@ -124,5 +124,33 @@ window.GATHER_RECIPES = [
         "Grill the kebabs and vegetables for 5–15 minutes, turning regularly, until the edges are browned and the meat is cooked through. Watch for smoke from dripping fat, especially if using a grill pan indoors, and ventilate properly.",
         "Serve immediately with lavash or other flatbread, the grilled vegetables, and your choice of sumac onions, ezme, or chopped salad."
     ]
+},
+{
+    "id": "pork-dumplings",
+    "title": "Pork Dumplings",
+    "category": "Dinner",
+    "icon": "Dumplings",
+    "time": 60,
+    "timeLabel": "1 hr total",
+    "servings": 10,
+    "description": "Steamed dumplings filled with ground pork, ginger, garlic, green onion, and Chinese cabbage.",
+    "notes": "Makes approximately 100 dumplings. Prep: 45 minutes. Cook: 15 minutes. Keep uncooked dumplings covered with a damp towel so they do not dry out. Serve hot with your preferred dipping sauce. Refrigerate leftovers in an airtight container for up to 2 days, or freeze cooked, cooled dumplings for up to 3 months.",
+    "ingredients": [
+        "100 wonton wrappers",
+        "1¾ lb ground pork",
+        "1 tbsp minced fresh ginger root",
+        "4 cloves garlic, minced",
+        "2 tbsp thinly sliced green onion",
+        "4 tbsp soy sauce",
+        "3 tbsp sesame oil",
+        "1 egg, beaten",
+        "5 cups finely shredded Chinese cabbage"
+    ],
+    "steps": [
+        "Combine the ground pork, ginger, garlic, green onion, soy sauce, sesame oil, beaten egg, and shredded cabbage in a large bowl. Stir until well mixed.",
+        "Put 1 heaping teaspoon of filling in the center of each wonton wrapper. Moisten the edges with water, fold into a triangle, and press the edges together to seal. Keep the filled dumplings covered with a damp towel until ready to cook.",
+        "Line a bamboo or metal steamer with parchment. Arrange the dumplings so they do not touch, working in batches as needed. Cover and steam over simmering water for about 15 minutes, until the pork is cooked through.",
+        "Serve the dumplings hot with your preferred dipping sauce."
+    ]
 }
 ];
