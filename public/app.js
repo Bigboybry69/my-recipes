@@ -165,7 +165,7 @@ window.addEventListener('hashchange', () => viewFromLocation());
 renderFamily();
 viewFromLocation(true);
 $('#search').oninput = renderRecipes;
-$('#custom-item').onsubmit = event => { event.preventDefault(); const input = event.currentTarget.elements.item; if (!input.value.trim()) return; shopping.push({ id: crypto.randomUUID(), text: input.value.trim(), checked: false }); save(); renderShopping(); input.value = ''; input.focus(); };
+$('#custom-item').onsubmit = event => { event.preventDefault(); const input = event.currentTarget.elements.namedItem('item'); if (!input.value.trim()) return; shopping.push({ id: crypto.randomUUID(), text: input.value.trim(), checked: false }); save(); renderShopping(); input.value = ''; input.focus(); };
 $('#clear-checked').onclick = () => { shopping = shopping.filter(i => !i.checked); save(); renderShopping(); };
 $('#clear-list').onclick = () => { if (shopping.length && confirm('Clear your entire shopping list?')) { shopping = []; save(); renderShopping(); } };
 document.querySelectorAll('.close').forEach(button => button.onclick = () => button.closest('dialog').close());
