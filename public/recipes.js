@@ -167,7 +167,7 @@ window.GATHER_RECIPES = [
     "id": "taiwanese-three-cup-chicken",
     "title": "Taiwanese Three Cup Chicken",
     "category": "Dinner",
-    "ownerId": "zoe",
+    "ownerId": "dan",
     "icon": "ThreeCupChicken",
     "photo": "./food-three-cup-chicken.jpg",
     "photoCaption": "RECIPE PHOTO FROM YOUR PDF",
