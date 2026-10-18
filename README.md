@@ -53,3 +53,5 @@ GitHub Pages stamps the deployed commit into the HTML and `version.json`. The ap
 Available food categories are Breakfast, Lunch, Dinner, and Dessert. The Snacks category has been removed.
 
 Chinese recipes retain their original characters and use `lang: "zh-Hant"` for Traditional Chinese. Chinese recipe details show Chinese ingredient and preparation headings. Search supports Chinese titles and ingredients as well as optional English aliases. Complexity recognizes equivalent advanced cooking techniques in English and Chinese without double-counting a technique. 橙汁排骨 belongs to Zoe; it uses pork ribs, not chicken, and requires at least 3 hours of marinating.
+
+紅燒牛肉麵 is assigned to Zoe and retains Chinese preparation instructions with bilingual ingredient names and approximate US measurements. Its large batch uses about 4 lb 2 oz of whole beef shank; yield and total elapsed time are unspecified in the source. The source food photograph is included locally.

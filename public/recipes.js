@@ -241,5 +241,58 @@ window.GATHER_RECIPES = [
         "鍋中備油，將排骨油炸至金黃且熟透後起鍋。",
         "柳丁汁、檸檬汁、太白粉水及適量糖、鹽先下鍋煮滾，再倒入炸好的排骨翻拌均勻，讓醬汁裹住排骨。醬汁差不多收乾即可起鍋盛盤。檸檬汁、糖及鹽可依個人口味調整。"
     ]
+},
+{
+    "id": "taiwanese-braised-beef-noodle-soup",
+    "title": "紅燒牛肉麵",
+    "lang": "zh-Hant",
+    "category": "Dinner",
+    "ownerId": "zoe",
+    "icon": "BeefNoodles",
+    "photo": "./food-beef-noodle-soup.jpg",
+    "photoCaption": "食譜原圖（來自提供的 PDF）",
+    "photoAlt": "紅燒牛肉麵，搭配牛腱切片、青菜、蔥花與酸菜",
+    "time": null,
+    "timeLabel": "燉煮 1 小時＋前煮／浸泡",
+    "servings": null,
+    "description": "整條牛腱先煮後切，再與番茄、洋蔥及辛香料慢燉，牛肉入味軟嫩，搭配麵條與青菜。",
+    "notes": "這是原食譜的大份量，小家庭可減半；原文未列明幾人份。牛腱原重約 1,870 公克，換算約 4 磅 2 盎司。先煮約 20 分鐘，原作者另悶約 30 分鐘；調味後再小火燉約 1 小時，另外還需要煮沸、放涼與浸泡時間，故不標示固定總時間。牛腱先整條煮再切片，避免生肉切小塊後縮成碎塊。辣豆瓣醬、醬油及鹽依口味調整。美式重量為近似換算，原食譜的「杯」未另外註明容量。滷包可在亞洲超市找 Chinese braising spice sachet。燉好浸泡入味後，若不立即食用，請儘快冷卻冷藏，食用前充分加熱。",
+    "searchTerms": [
+        "beef noodle soup",
+        "Taiwanese beef noodles",
+        "braised beef shank",
+        "牛肉湯",
+        "牛腱"
+    ],
+    "ingredients": [
+        "牛腱 — Whole boneless beef shank: 2 pieces, about 4 lb 2 oz total",
+        "青蔥 — Scallions / green onions: 4 stalks (for the first simmer)",
+        "薑 — Fresh ginger: 12 slices",
+        "前煮｜米酒 — Rice cooking wine: 2 tablespoons (for the first simmer)",
+        "大蒜 — Garlic: 15 cloves",
+        "洋蔥 — Onions: 2, sliced",
+        "羅馬番茄 — Roma tomatoes: 5, cut into chunks",
+        "辣豆瓣醬 — Spicy fermented broad bean paste / doubanjiang: 4–5 tablespoons, to taste",
+        "醬油 — Soy sauce: 1–1½ cups, to taste (original recipe does not specify cup size)",
+        "燉煮｜米酒 — Rice cooking wine: 6 tablespoons (for the braise)",
+        "冰糖 — Rock sugar: 1 tablespoon",
+        "鹽 — Salt: to taste, if needed",
+        "滷包 — Chinese braising spice sachet: 1 packet",
+        "黑胡椒 — Ground black pepper: a little, to taste",
+        "食用油 — Cooking oil: a little, for stir-frying",
+        "水 — Water: enough to cover the beef; keep this broth for the soup",
+        "麵條 — Noodles: as needed, for serving",
+        "青菜 — Leafy greens / bok choy: as needed, for serving",
+        "蔥花 — Chopped scallions: as needed, for garnish",
+        "酸菜 — Pickled mustard greens: optional, for serving (the author serves them stir-fried with sugar and chili)"
+    ],
+    "steps": [
+        "將整條牛腱、薑片、4 枝青蔥、米酒 2 大匙及足以蓋過牛肉的水放入鍋中，從冷水慢慢加熱至沸騰，轉中小火再煮約 20 分鐘。原作者關火後另加蓋悶約 30 分鐘，較大塊的牛腱可再延長時間。",
+        "挑掉蔥、薑，撈除浮沫，保留牛肉高湯。將牛腱放至可操作的溫度後取出，切成約 1 公分（約 ⅜ 英吋）厚的肉片。",
+        "牛肉高湯中加入切塊番茄、滷包及少許黑胡椒，繼續加熱。",
+        "炒鍋放少許油，炒香蒜頭與洋蔥絲；加入辣豆瓣醬、醬油、冰糖、米酒 6 大匙及牛肉片，拌炒至上色。",
+        "將炒鍋中的材料倒回牛肉高湯，以小火煮約 1 小時，再關火加蓋、不要攪動，浸泡至入味。若牛肉仍不夠軟，可延長燉煮。放涼後若不立即食用，請儘快冷藏，避免長時間置於室溫；食用前再次充分加熱，試味後再視需要加鹽。",
+        "另煮麵條及青菜，盛入碗中，加入熱牛肉湯、牛肉片與蔥花；可依喜好搭配炒過的酸菜。"
+    ]
 }
 ];
