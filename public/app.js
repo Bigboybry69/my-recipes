@@ -27,7 +27,6 @@ const foodPaths = {
   Lunch: '<path d="M21 48h78c-3 23-16 33-39 33S24 71 21 48Z M38 47c-13-19 4-33 17-13 M57 46c-7-24 15-35 21-14 M77 47c0-15 16-20 19-9 M45 83h30 M33 33l13 9 M67 23l-2 20"/>',
   Breakfast: '<path d="M29 45c-12-24 3-33 31-33s43 9 31 33v35H29V45Z M38 46c-9-17 2-23 22-23s31 6 22 23v24H38V46Z"/><circle cx="60" cy="48" r="13"/><path d="M55 46h1m8 0h1 M53 55c5 4 10 4 15 0"/>',
   Dessert: '<path d="M23 72h76L84 34H37L23 72Z M23 73v9h76v-9 M37 34l47 0 M61 34V20 M61 18c-10-8 0-12 0-17 10 10 8 14 0 17Z M30 55c9-15 16 9 24-2s12 12 20 0 14 7 18 1"/>',
-  Snacks: '<circle cx="60" cy="47" r="34"/><circle cx="48" cy="32" r="4"/><circle cx="75" cy="40" r="4"/><circle cx="56" cy="59" r="5"/><path d="m37 49 6 4m27 12 5-5m-9-35 3 3"/>'
 };
 function foodIcon(category, icon) { return `<svg class="food-icon" viewBox="0 0 120 95" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${foodPaths[icon] || foodPaths[category] || foodPaths.Dinner}</svg>`; }
 function renderRecipes() {
@@ -35,7 +34,7 @@ function renderRecipes() {
   const assigned = memberRecipes();
   const filtered = assigned.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...r.ingredients].join(' ').toLowerCase().includes(query));
   $('#recipe-count').textContent = `${filtered.length} / ${assigned.length} RECORDS`;
-  $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks'].map(name => {
+  $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'].map(name => {
     const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
   }));
   $('#recipe-grid').replaceChildren(...filtered.map(recipe => {

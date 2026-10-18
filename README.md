@@ -36,9 +36,9 @@ HP drains toward local breakfast (7:30 AM), lunch (12:30 PM), and dinner (6:30 P
 
 ## Family cookbooks
 
-The front screen lets everyone choose Dan, Demi, or Stu. Anyone can view any family cookbook and switch characters at any time. Each member has their own recipe list, XP, level, and maximum HP. All five original recipes belong to Dan; Demi and Stu start empty. Shopping items remain one shared checklist in the current browser, so a grocery run can include dishes from several cookbooks.
+The front screen lets everyone choose Dan, Demi, Stu, or Zoe. Anyone can view any family cookbook and switch characters at any time. Each member has their own recipe list, XP, level, and maximum HP. Existing recipes stay assigned to Dan and Demi; Stu and Zoe start with empty cookbooks. Shopping items remain one shared checklist in the current browser, so a grocery run can include dishes from several cookbooks.
 
-Assign recipes by setting `ownerId` in `public/recipes.js` to `dan`, `demi`, or `stu`. Recipe ownership is published with the site, never saved as a browser-only change. Recipes without an owner default to Dan for compatibility. Add new recipes and reassign existing ones through the assistant. Character names and artwork are configured in `public/family.js`.
+Assign recipes by setting `ownerId` in `public/recipes.js` to `dan`, `demi`, `stu`, or `zoe`. Recipe ownership is published with the site, never saved as a browser-only change. Recipes without an owner default to Dan for compatibility. Add new recipes and reassign existing ones through the assistant. Character names and artwork are configured in `public/family.js`.
 
 On the first visit, the app opens at `#family`. Later launches restore the last selected character’s stats using the `radtion-last-member` browser preference. The Family button still opens the picker; explicit member links take priority over the remembered selection. Member screens use `#dan/stats`, `#demi/food`, or `#stu/items`, for example. Older `#stats`, `#food`, and `#items` links still open Dan’s cookbook. The iPhone home-screen icon remains the main green cook.
 
@@ -49,3 +49,5 @@ Recipe details include an initially expanded **View food photo** field-photo pan
 ## App updates
 
 GitHub Pages stamps the deployed commit into the HTML and `version.json`. The app checks that version on startup, resume, focus, and once a minute while visible, using uncached requests. When a newer deployment is detected, it opens a fresh document URL with the new version while preserving the character/tab hash. Character preferences and shopping items remain in localStorage. Automatic refresh waits while a recipe dialog is open or an input is being edited. The footer's **Check for Updates** button explicitly checks and refreshes immediately if needed. Offline checks leave the current app usable. An existing installation must load this update once before these checks can run. No service worker is used.
+
+Available food categories are Breakfast, Lunch, Dinner, and Dessert. The Snacks category has been removed.

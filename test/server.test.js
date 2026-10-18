@@ -10,7 +10,7 @@ test('serves the cookbook and assets, rejects missing files', async () => {
       const response = await fetch(`http://127.0.0.1:3199${route}`);
       assert.equal(response.status, 200); assert.ok(response.headers.get('content-type').includes(type)); assert.ok((await response.text()).toLowerCase().includes(content.toLowerCase()));
     }
-    for (const file of ['radtion-cook.png', 'demi.png', 'stu.png', 'photo-options.png', 'food-cream-cheese-chicken.png', 'food-cajun-pasta.png', 'food-taco-ring.png', 'food-adana-kebab.png', 'food-pork-dumplings.png']) {
+    for (const file of ['radtion-cook.png', 'demi.png', 'stu.png', 'zoe.png', 'photo-options.png', 'food-cream-cheese-chicken.png', 'food-cajun-pasta.png', 'food-taco-ring.png', 'food-adana-kebab.png', 'food-pork-dumplings.png']) {
       const mascot = await fetch(`http://127.0.0.1:3199/${file}`);
       assert.equal(mascot.status, 200);
       assert.ok(mascot.headers.get('content-type').startsWith('image/png'));
