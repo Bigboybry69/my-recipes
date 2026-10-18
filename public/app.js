@@ -95,7 +95,7 @@ function renderShopping() {
     items.append(row);
   });
 }
-const viewHashes = { stats: 'stats', recipes: 'food', shopping: 'items' };
+const viewHashes = { stats: 'stats', recipes: 'food', timer: 'timer', shopping: 'items' };
 let activeView = 'family';
 function renderFamily() {
   $('#family-grid').replaceChildren(...window.Family.members.map(member => {
@@ -172,6 +172,7 @@ function viewFromLocation(restoreLast = false) {
 $('#family-home').onclick = () => switchView('family');
 $('#stats-tab').onclick = () => switchView('stats');
 $('#recipes-tab').onclick = () => switchView('recipes');
+$('#timer-tab').onclick = () => switchView('timer');
 $('#shopping-tab').onclick = () => switchView('shopping');
 window.addEventListener('hashchange', () => viewFromLocation());
 renderFamily();

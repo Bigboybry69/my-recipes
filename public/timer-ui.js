@@ -1,7 +1,6 @@
 (() => {
   const $ = selector => document.querySelector(selector);
   const model = window.CookingTimer;
-  const dialog = $('#timer-dialog');
   const form = $('#timer-form');
   const chip = $('#timer-chip');
   const storageKey = 'radtion-timer';
@@ -71,7 +70,7 @@
     $('#timer-pause').hidden = !['running', 'paused'].includes(timer.state);
     $('#timer-pause').textContent = timer.state === 'paused' ? 'RESUME' : 'PAUSE';
     $('#timer-stop').textContent = done ? 'DISMISS ALARM' : 'CANCEL TIMER';
-    chip.hidden = !active;
+    chip.hidden = !active || !$('#timer-view').hidden;
     chip.textContent = done ? '⚠ TIMER FINISHED — DISMISS' : `${timer.state === 'paused' ? 'Ⅱ' : '◷'} ${model.format(timer.remaining)}`;
     document.body.classList.toggle('timer-alarm', done);
     const alert = done ? 'Cooking timer finished. Check your food.' : '';
@@ -80,7 +79,10 @@
   }
   function open(label) {
     if (timer.state === 'idle' && typeof label === 'string') form.elements.namedItem('label').value = label.slice(0, 100);
-    if (!dialog.open) dialog.showModal();
+    if ($('#recipe-dialog').open) $('#recipe-dialog').close();
+    switchView('timer');
+    render();
+    $('#timer-heading').scrollIntoView?.({ block: 'start', behavior: 'smooth' });
   }
   function refresh() {
     const previous = timer.state;
@@ -89,7 +91,6 @@
     if (timer.state === 'done') soundAlarm();
     render();
   }
-  $('#open-timer').onclick = () => open();
   chip.onclick = () => open();
   form.onsubmit = event => {
     event.preventDefault();
