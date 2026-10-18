@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { members, recipesFor } = require('../public/family');
 const { collectionStats } = require('../public/recipe-stats');
 test('family cookbooks are individually assigned and keep separate XP', () => {
-  assert.deepEqual(members.map(member => member.name), ['Dan', 'Demi', 'Stu', 'Zoe', 'Emre']);
+  assert.deepEqual(members.map(member => member.name), ['Dan', 'Demi', 'Stu', 'Zoe', 'Emre', 'Ben']);
   const sample = { ingredients: Array(6).fill('ingredient'), steps: Array(5).fill('mix') };
   const recipes = [{ ...sample, id: 'old' }, { ...sample, id: 'new', ownerId: 'demi' }];
   assert.deepEqual(recipesFor(recipes, 'dan').map(recipe => recipe.id), ['old']);
@@ -11,6 +11,8 @@ test('family cookbooks are individually assigned and keep separate XP', () => {
   assert.deepEqual(recipesFor(recipes, 'stu'), []);
   assert.deepEqual(recipesFor(recipes, 'zoe'), []);
   assert.deepEqual(recipesFor(recipes, 'emre'), []);
+  assert.deepEqual(recipesFor(recipes, 'ben'), []);
+  assert.equal(collectionStats(recipesFor(recipes, 'ben')).total, 0);
   assert.equal(collectionStats(recipesFor(recipes, 'emre')).total, 0);
   assert.equal(collectionStats(recipesFor(recipes, 'demi')).total, 75);
   assert.equal(collectionStats(recipesFor(recipes, 'stu')).total, 0);
