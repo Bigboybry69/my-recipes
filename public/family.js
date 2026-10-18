@@ -2,9 +2,9 @@
   const members = [
     { id: 'dan', name: 'Dan', role: 'THE ORIGINAL COOK', image: './radtion-cook.png' },
     { id: 'demi', name: 'Demi', role: 'WASTELAND BAKER', image: './demi.png' },
-    { id: 'stu', name: 'Stu', role: 'GRILL SPECIALIST', image: './stu.png' },
+    { id: 'stu', name: 'Stu', role: 'GRILL SPECIALIST', image: './emre.png' },
     { id: 'zoe', name: 'Zoe', role: 'WASTELAND HOME COOK', image: './zoe.png' },
-    { id: 'emre', name: 'Emre', role: 'WASTELAND CHEF', image: './emre.png' }
+    { id: 'emre', name: 'Emre', role: 'WASTELAND CHEF', image: './stu.png' }
   ];
   function recipesFor(recipes, memberId) {
     return recipes.filter(recipe => (recipe.ownerId || 'dan') === memberId);
