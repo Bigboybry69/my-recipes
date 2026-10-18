@@ -40,4 +40,4 @@ The front screen lets everyone choose Dan, Demi, or Stu. Anyone can view any fam
 
 Assign recipes by setting `ownerId` in `public/recipes.js` to `dan`, `demi`, or `stu`. Recipe ownership is published with the site, never saved as a browser-only change. Recipes without an owner default to Dan for compatibility. Add new recipes and reassign existing ones through the assistant. Character names and artwork are configured in `public/family.js`.
 
-The app opens at `#family`. Member screens use `#dan/stats`, `#demi/food`, or `#stu/items`, for example. Older `#stats`, `#food`, and `#items` links still open Dan’s cookbook. The iPhone home-screen icon remains the main green cook.
+On the first visit, the app opens at `#family`. Later launches restore the last selected character’s stats using the `radtion-last-member` browser preference. The Family button still opens the picker; explicit member links take priority over the remembered selection. Member screens use `#dan/stats`, `#demi/food`, or `#stu/items`, for example. Older `#stats`, `#food`, and `#items` links still open Dan’s cookbook. The iPhone home-screen icon remains the main green cook.

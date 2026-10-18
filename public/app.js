@@ -106,6 +106,8 @@ function renderFamily() {
 function selectMember(id, view = 'stats', updateLocation = true) {
   if (!window.Family.members.some(member => member.id === id)) id = 'dan';
   selectedMember = id;
+  try { localStorage.setItem('radtion-last-member', JSON.stringify(id)); }
+  catch { storageAvailable = false; }
   category = 'All recipes';
   $('#search').value = '';
   $('#cookbook-owner').textContent = `${currentMember().name}’S`;
@@ -133,8 +135,16 @@ function switchView(view, updateLocation = true) {
   const hash = view === 'family' ? '#family' : `#${selectedMember}/${viewHashes[view]}`;
   if (updateLocation && location.hash !== hash) location.hash = hash;
 }
-function viewFromLocation() {
+function viewFromLocation(restoreLast = false) {
   const hash = location.hash.slice(1);
+  if (restoreLast && (!hash || hash === 'family' || hash === 'stats')) {
+    const saved = read('radtion-last-member', null);
+    if (window.Family.members.some(member => member.id === saved)) {
+      history.replaceState(null, '', `#${saved}/stats`);
+      selectMember(saved, 'stats', false);
+      return;
+    }
+  }
   if (!hash || hash === 'family') { switchView('family', false); return; }
   const [first, second] = hash.split('/');
   const member = second ? first : 'dan';
@@ -147,9 +157,9 @@ $('#family-home').onclick = () => switchView('family');
 $('#stats-tab').onclick = () => switchView('stats');
 $('#recipes-tab').onclick = () => switchView('recipes');
 $('#shopping-tab').onclick = () => switchView('shopping');
-window.addEventListener('hashchange', viewFromLocation);
+window.addEventListener('hashchange', () => viewFromLocation());
 renderFamily();
-viewFromLocation();
+viewFromLocation(true);
 $('#search').oninput = renderRecipes;
 $('#custom-item').onsubmit = event => { event.preventDefault(); const input = event.currentTarget.elements.item; if (!input.value.trim()) return; shopping.push({ id: crypto.randomUUID(), text: input.value.trim(), checked: false }); save(); renderShopping(); input.value = ''; input.focus(); };
 $('#clear-checked').onclick = () => { shopping = shopping.filter(i => !i.checked); save(); renderShopping(); };
@@ -158,7 +168,7 @@ document.querySelectorAll('.close').forEach(button => button.onclick = () => but
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } }));
 document.addEventListener('keydown', event => { if ((event.metaKey || event.ctrlKey) && event.key === 'k') { event.preventDefault(); switchView('recipes'); $('#search').focus(); } });
 renderRecipes(); renderShopping();
-if (!storageAvailable) toast('Shopping checklist storage is unavailable. Recipes are still available from the website.');
+if (!storageAvailable) toast('Browser storage is unavailable. Character choices and shopping checkmarks may not be remembered.');
 
 function updateClock() {
   const now = new Date();
