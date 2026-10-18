@@ -26,7 +26,7 @@ function app(options = {}) {
     },
     addEventListener(name, handler) { documentEvents[name] = handler; }
   };
-  const window = { addEventListener(name, handler) { windowEvents[name] = handler; } };
+  const window = { RadtionTimer: { isActive: () => state.timerActive }, addEventListener(name, handler) { windowEvents[name] = handler; } };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/updates.js'), 'utf8'), {
     window, document, URL, Date: { now: () => state.clock }, setInterval() {},
     location: { href: 'https://example.com/my-recipes/?v=old#demi/food', replace(url) { navigations.push(url); } },
@@ -83,4 +83,14 @@ test('deployment stamps document and assets with the same published version', ()
     assert.ok(html.includes(`content="${latest}"`));
     assert.ok(html.includes(`updates.js?v=${latest}`));
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('automatic updates wait for active timers even with all dialogs closed', async () => {
+  const instance = app({ version: latest, timerActive: true });
+  await instance.check();
+  assert.equal(instance.navigations.length, 0);
+  instance.state.timerActive = false;
+  instance.state.clock += 20000;
+  await instance.check();
+  assert.equal(instance.navigations.length, 1);
 });

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080e09"><link rel="apple-touch-icon" href="./apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="Radtion"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" type="image/png" href="./apple-touch-icon.png"><link rel="manifest" href="./site.webmanifest"><meta name="radtion-version" content="development"><title>Radtion — Wasteland Recipe Terminal</title><link rel="stylesheet" href="./style.css"><script src="./recipes.js" defer></script><script src="./meal-power.js" defer></script><script src="./recipe-stats.js" defer></script><script src="./family.js" defer></script><script src="./recipe-filters.js" defer></script><script src="./app.js" defer></script><script src="./updates.js" defer></script></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080e09"><link rel="apple-touch-icon" href="./apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="Radtion"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" type="image/png" href="./apple-touch-icon.png"><link rel="manifest" href="./site.webmanifest"><meta name="radtion-version" content="development"><title>Radtion — Wasteland Recipe Terminal</title><link rel="stylesheet" href="./style.css"><script src="./recipes.js" defer></script><script src="./meal-power.js" defer></script><script src="./recipe-stats.js" defer></script><script src="./family.js" defer></script><script src="./recipe-filters.js" defer></script><script src="./app.js" defer></script><script src="./cooking-timer.js" defer></script><script src="./timer-ui.js" defer></script><script src="./updates.js" defer></script></head>
 <body>
 <div class="device-shell">
 <div class="case-top" aria-hidden="true"><i class="screw"></i><span>RADTION <b>4011</b></span><i class="screw"></i></div>
@@ -33,11 +33,26 @@
 <div id="recipe-grid" class="recipe-grid"></div><div id="empty" class="empty" hidden><h3>No recipes found</h3><p>Try another recipe name or ingredient.</p></div>
 </section>
 <section id="shopping-view" hidden><div class="page-heading"><div class="eyebrow">INVENTORY / SUPPLY REQUISITION</div><h1>SUPPLY RUN<span>_</span></h1><p>Ingredients acquired? Mark them off. Return to base fully stocked.</p></div><div class="shopping-actions"><button id="clear-checked" class="secondary">Clear checked items</button><button id="clear-list" class="text-button">Clear list</button></div><form id="custom-item"><input name="item" type="text" enterkeyhint="done" placeholder="Add something else to your list…" aria-label="Shopping item" required maxlength="200"><button class="primary" type="submit">Add item</button></form><div id="shopping-items"></div></section>
-<footer><a class="brand" href="./">STATUS — ONLINE</a><span id="footer-state">ALL SYSTEMS OPERATIONAL</span><div class="app-updates"><button id="check-updates" class="secondary">CHECK FOR UPDATES</button><span id="update-status" role="status">Checks for updates when you reopen the app.</span></div><small>Shared cookbooks, available on all your devices. Shopping checkmarks stay on this device.</small></footer>
+<footer><a class="brand" href="./">STATUS — ONLINE</a><span id="footer-state">ALL SYSTEMS OPERATIONAL</span><button id="open-timer" class="secondary">◷ COOKING TIMER</button><div class="app-updates"><button id="check-updates" class="secondary">CHECK FOR UPDATES</button><span id="update-status" role="status">Checks for updates when you reopen the app.</span></div><small>Shared cookbooks, available on all your devices. Shopping checkmarks stay on this device.</small></footer>
 </main>
 </div><div class="case-bottom" aria-hidden="true"><i class="screw"></i><span>RADTION // PROVISIONS DIVISION</span><i class="screw"></i></div>
 </div>
 <dialog id="recipe-dialog"><div class="dialog-top"><span class="eyebrow">FROM PERSONAL RECIPE ARCHIVE</span><button class="close" aria-label="Close recipe">×</button></div><div id="recipe-detail"></div></dialog>
 
+<button id="timer-chip" class="secondary" aria-label="Open cooking timer" hidden></button>
+<dialog id="timer-dialog" aria-labelledby="timer-heading">
+<div class="dialog-top"><span class="eyebrow">KITCHEN / COUNTDOWN PROTOCOL</span><button class="close" aria-label="Close timer">×</button></div>
+<h2 id="timer-heading">COOKING TIMER</h2>
+<form id="timer-form">
+<label class="timer-label">TIMER NAME <input name="label" type="text" maxlength="100" placeholder="Pasta, oven, simmer…"></label>
+<div class="timer-inputs"><label>HOURS<input name="hours" type="number" min="0" max="24" value="0" required></label><label>MINUTES<input name="minutes" type="number" min="0" max="59" value="10" required></label><label>SECONDS<input name="seconds" type="number" min="0" max="59" value="0" required></label></div>
+<div class="timer-presets"><button type="button" class="secondary" data-timer-minutes="5">5 MIN</button><button type="button" class="secondary" data-timer-minutes="10">10 MIN</button><button type="button" class="secondary" data-timer-minutes="20">20 MIN</button><button type="button" class="secondary" data-timer-minutes="30">30 MIN</button></div>
+<p id="timer-error" role="alert"></p><button type="submit" class="primary">START TIMER</button>
+</form>
+<div id="timer-active" hidden><p id="timer-label-display"></p><div id="timer-readout" aria-label="Time remaining">00:00:00</div><p id="timer-state"></p><div class="timer-buttons"><button id="timer-pause" class="secondary">PAUSE</button><button id="timer-stop" class="primary">CANCEL TIMER</button></div></div>
+<p id="timer-alert" role="alert"></p>
+<div class="timer-audio"><label><input id="timer-sound" type="checkbox" checked> ALARM SOUND</label><button id="timer-test" class="secondary">TEST / ENABLE SOUND</button></div><p id="timer-sound-status" class="stats-help"></p>
+<p class="stats-help">Original emergency-style alarm. Keep Radtion open and your screen awake: phone browsers may silence sound while locked or in the background. One timer at a time, saved on this device.</p>
+</dialog>
 <div id="toast" role="status"></div>
 </body></html>

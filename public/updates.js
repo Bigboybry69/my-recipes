@@ -7,7 +7,7 @@
   const isVersion = value => typeof value === 'string' && /^[a-f0-9]{40}$/.test(value);
 
   function busy() {
-    return Boolean(document.querySelector('dialog[open]') ||
+    return Boolean(window.RadtionTimer?.isActive() || document.querySelector('dialog[open]') ||
       document.querySelector('#custom-item input')?.value.trim() ||
       document.activeElement?.matches('input, textarea, select'));
   }
