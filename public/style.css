@@ -50,3 +50,4 @@ body[data-health="critical"] :is(.device-screen,dialog,#toast){filter:hue-rotate
 
 /* Keep short protein lists grouped on the right; long lists wrap without clipping. */
 #proteins{justify-content:flex-end;gap:6px;flex-wrap:wrap;overflow:visible}
+#proteins>.chip:first-child{margin-right:auto}
