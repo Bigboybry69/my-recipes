@@ -197,5 +197,49 @@ window.GATHER_RECIPES = [
         "Pour in the sauce, scraping all the sugar out of the bowl. Once bubbling, reduce the heat to medium-high or medium so it simmers fairly rapidly, but not wildly. Simmer for about 5 minutes, stirring to coat the chicken, until it is cooked through and the sauce reduces from watery to a thin syrup. If the sauce reduces too quickly, add a splash of water.",
         "Stir in the toasted sesame oil, then the Thai basil leaves until wilted, about 15 seconds. Serve over rice with the syrup from the pan; the sauce is intensely flavored, so only a little is needed."
     ]
+},
+{
+    "id": "orange-glazed-pork-ribs",
+    "title": "橙汁排骨",
+    "lang": "zh-Hant",
+    "category": "Dinner",
+    "ownerId": "zoe",
+    "icon": "OrangeRibs",
+    "photo": "./food-orange-pork-ribs.jpg",
+    "photoCaption": "食譜原圖（來自提供的 PDF）",
+    "photoAlt": "淋上橙汁醬的金黃排骨，搭配柳丁切片盛盤",
+    "time": null,
+    "timeLabel": "醃製至少 3 小時",
+    "servings": 4,
+    "description": "金黃酥香的排骨裹上酸甜柳橙醬汁，果香清爽，是很下飯的家常料理。",
+    "notes": "份量：4 人份。排骨須醃製至少 3 小時；原食譜未提供完整烹調時間。檸檬汁、糖、鹽可依個人喜好逐量調整，不必一次全部加入。油炸另需食用油，原食譜未註明用量。",
+    "searchTerms": [
+        "orange pork ribs",
+        "orange glazed pork ribs",
+        "柳丁排骨"
+    ],
+    "ingredients": [
+        "排骨 600 公克",
+        "地瓜粉 適量（裹粉用）",
+        "醃料｜醬油 20 公克",
+        "醃料｜鹽 1 小匙",
+        "醃料｜糖 1 小匙",
+        "醃料｜白胡椒粉 1 小匙",
+        "醃料｜雞蛋 1 顆",
+        "醃料｜太白粉 適量",
+        "醃料｜蒜末 適量",
+        "醬汁｜柳丁 3 顆",
+        "醬汁｜檸檬 1 顆",
+        "醬汁｜太白粉水（太白粉：水＝1：10）適量",
+        "醬汁｜糖、鹽 適量",
+        "食用油 適量（油炸用）"
+    ],
+    "steps": [
+        "排骨加入醬油、鹽、糖、白胡椒粉、雞蛋、太白粉及蒜末，抓拌均勻，靜置醃製至少 3 小時。",
+        "將柳丁及檸檬榨出原汁，可用叉子輔助擠汁。",
+        "醃製完成的排骨裹上地瓜粉，靜置等待粉層反潮，油炸時較不容易脫皮。",
+        "鍋中備油，將排骨油炸至金黃且熟透後起鍋。",
+        "柳丁汁、檸檬汁、太白粉水及適量糖、鹽先下鍋煮滾，再倒入炸好的排骨翻拌均勻，讓醬汁裹住排骨。醬汁差不多收乾即可起鍋盛盤。檸檬汁、糖及鹽可依個人口味調整。"
+    ]
 }
 ];

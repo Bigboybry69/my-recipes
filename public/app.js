@@ -17,6 +17,7 @@ function toast(message) { $('#toast').textContent = message; $('#toast').classLi
 function save() { try { localStorage.setItem('gather-shopping', JSON.stringify(shopping)); return true; } catch { storageAvailable = false; toast('Browser storage is unavailable or full. Your shopping checklist will only last for this visit.'); return false; } }
 function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 const foodPaths = {
+  OrangeRibs: '<ellipse cx="58" cy="68" rx="43" ry="16"/><path d="m26 54 7-15 18-2 10 12-7 14-18 1Z m32-10 10-12 19 4 6 15-9 12-18-3Z M45 65l9-11 17 6 3 13-15 6-13-7Z M38 43l9 11m24-13 12 10 M27 72l8 3m45-7 7 1"/><circle cx="94" cy="27" r="16"/><circle cx="94" cy="27" r="12"/><path d="M94 15v24 M82 27h24 M86 19l16 16 M86 35l16-16 M38 26c-6-8 7-8 0-16"/>',
   ThreeCupChicken: '<path d="M20 48h80c-3 23-18 34-40 34S23 71 20 48Z M39 84h42 M23 51c19 9 55 9 74 0 M40 39l5-9 12 2 4 10-9 7-12-4Z M64 35l9-9 12 5 3 10-10 7-13-3Z M36 21c-7-8 6-8 0-16 M60 22c-7-8 6-8 0-16"/><path d="M88 18c-13-5-18 4-12 12 9 0 15-4 12-12Z M87 19l-10 9 M33 60l5 4m10 1 5 3m13-3 6-3"/>',
   Dumplings: '<ellipse cx="60" cy="76" rx="46" ry="10"/><path d="M23 66c0-17 14-28 31-28 18 0 32 11 32 28-16 12-46 12-63 0Z M23 66c9-3 6-15 15-13 8 1 5-12 14-9 9 3 9-8 16-1 6 6 11 4 14 13 M44 38c3-16 20-24 35-16 15 7 20 21 15 34l-10 9 M51 32l8 9 M63 26l5 13 M76 25l1 14 M87 33l-5 10 M33 24c-8-8 7-9 0-18 M55 17c-7-7 6-8 0-15"/>',
   Kebab: '<path d="m22 83 13-16m46-55 7-8M45 87l12-15m39-55 6-8"/><path d="m35 67-5-7 34-43 8-3 9 8-1 8-34 43-11-6Z m22 5-5-8 30-38 8-3 9 7-1 8-29 38-12-4Z M38 53l13 9 M47 42l13 9 M56 31l13 9 M62 57l12 9 M71 46l12 9 M80 35l12 9"/><path d="M19 88h87 M16 19c-6-7 5-7 0-14 M36 18c-6-7 5-7 0-14"/>',
@@ -32,14 +33,14 @@ function foodIcon(category, icon) { return `<svg class="food-icon" viewBox="0 0 
 function renderRecipes() {
   const query = $('#search').value.trim().toLowerCase();
   const assigned = memberRecipes();
-  const filtered = assigned.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...r.ingredients].join(' ').toLowerCase().includes(query));
+  const filtered = assigned.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...(r.searchTerms || []), ...r.ingredients].join(' ').toLowerCase().includes(query));
   $('#recipe-count').textContent = `${filtered.length} / ${assigned.length} RECORDS`;
   $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'].map(name => {
     const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
   }));
   $('#recipe-grid').replaceChildren(...filtered.map(recipe => {
     const stats = window.RecipeStats.recipeStats(recipe);
-    const card = document.createElement('article'); card.className = 'recipe-card';
+    const card = document.createElement('article'); card.className = 'recipe-card'; card.lang = recipe.lang || 'en';
     const artwork = document.createElement('button'); artwork.className = 'card-image'; artwork.style.width = '100%'; artwork.setAttribute('aria-label', `View ${recipe.title}`);
     artwork.innerHTML = `<span class="category-tag">${escapeHTML(recipe.category)}</span>${foodIcon(recipe.category, recipe.icon)}`; artwork.onclick = () => showRecipe(recipe.id);
     const body = document.createElement('div'); body.className = 'card-body';
@@ -66,7 +67,8 @@ function showRecipe(id) {
   const r = recipes.find(recipe => recipe.id === id); if (!r) return;
   const stats = window.RecipeStats.recipeStats(r);
   $('#recipe-detail').dataset.recipeId = r.id;
-  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings} servings</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p>${fieldPhoto(r)}${r.notes ? `<p class="stats-help">${escapeHTML(r.notes)}</p>` : ''}<div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>FLAVOR BONUS +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. HP bonuses are just for fun; your health bar refills automatically an hour after each meal. XP comes from adding recipes to the collection.</p><h3 class="detail-section">Ingredients</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">Preparation protocol</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
+  $('#recipe-detail').lang = r.lang || 'en';
+  $('#recipe-detail').innerHTML = `<div class="detail-food" aria-hidden="true">${foodIcon(r.category, r.icon)}</div><h2>${escapeHTML(r.title)}</h2><div class="detail-meta"><span>${escapeHTML(r.category)}</span><span>◷ ${escapeHTML(r.timeLabel || `${r.time} minutes`)}</span>${r.servings ? `<span>${r.servings}${r.lang === 'zh-Hant' ? ' 人份' : ' servings'}</span>` : ''}</div><p>${escapeHTML(r.description || '')}</p>${fieldPhoto(r)}${r.notes ? `<p class="stats-help">${escapeHTML(r.notes)}</p>` : ''}<div class="recipe-rewards detail-rewards"><span>COMPLEXITY <b>${stats.complexity}/10</b></span><span>FLAVOR BONUS +${stats.hp} HP</span><span>COLLECTION +${stats.xp} XP</span></div><p class="stats-help">Complexity reflects ingredient count, preparation steps, and advanced techniques. HP bonuses are just for fun; your health bar refills automatically an hour after each meal. XP comes from adding recipes to the collection.</p><h3 class="detail-section">${r.lang === 'zh-Hant' ? '食材' : 'Ingredients'}</h3>${r.ingredients.map(i => `<label class="ingredient"><input type="checkbox"><span>${escapeHTML(i)}</span></label>`).join('')}<h3 class="detail-section">${r.lang === 'zh-Hant' ? '料理步驟' : 'Preparation protocol'}</h3><ol class="steps">${r.steps.map(s => `<li>${escapeHTML(s)}</li>`).join('')}</ol><div class="detail-actions"><button class="secondary" id="detail-shop">+ REQUISITION INGREDIENTS</button></div>`;
   $('#detail-shop').onclick = () => addRecipeToList(r);
   updateHealth(new Date());
   $('#recipe-dialog').showModal();
