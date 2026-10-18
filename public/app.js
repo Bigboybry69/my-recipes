@@ -1,5 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
 const recipes = window.GATHER_RECIPES;
+let selectedMember = 'dan';
+function memberRecipes() { return window.Family.recipesFor(recipes, selectedMember); }
+function currentMember() { return window.Family.members.find(member => member.id === selectedMember); }
 
 let storageAvailable = true;
 function read(key, fallback) {
@@ -28,8 +31,9 @@ const foodPaths = {
 function foodIcon(category, icon) { return `<svg class="food-icon" viewBox="0 0 120 95" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${foodPaths[icon] || foodPaths[category] || foodPaths.Dinner}</svg>`; }
 function renderRecipes() {
   const query = $('#search').value.trim().toLowerCase();
-  const filtered = recipes.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...r.ingredients].join(' ').toLowerCase().includes(query));
-  $('#recipe-count').textContent = `${filtered.length} / ${recipes.length} RECORDS`;
+  const assigned = memberRecipes();
+  const filtered = assigned.filter(r => (category === 'All recipes' || r.category === category) && [r.title, r.description || '', ...r.ingredients].join(' ').toLowerCase().includes(query));
+  $('#recipe-count').textContent = `${filtered.length} / ${assigned.length} RECORDS`;
   $('#categories').replaceChildren(...['All recipes', 'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks'].map(name => {
     const button = document.createElement('button'); button.className = 'chip' + (name === category ? ' active' : ''); button.textContent = name; button.setAttribute('aria-pressed', name === category); button.onclick = () => { category = name; renderRecipes(); }; return button;
   }));
@@ -44,6 +48,8 @@ function renderRecipes() {
     card.append(artwork, body); return card;
   }));
   $('#empty').hidden = filtered.length > 0;
+  $('#empty h3').textContent = assigned.length ? 'No recipes found' : `${currentMember().name}’s cookbook is waiting`;
+  $('#empty p').textContent = assigned.length ? 'Try another recipe name or ingredient.' : 'No recipes assigned yet. Switch characters to explore the family collection.';
 }
 function addRecipeToList(recipe) {
   let count = 0;
@@ -74,9 +80,48 @@ function renderShopping() {
     items.append(row);
   });
 }
-const viewHashes = { stats: '#stats', recipes: '#food', shopping: '#items' };
+const viewHashes = { stats: 'stats', recipes: 'food', shopping: 'items' };
+let activeView = 'family';
+function renderFamily() {
+  $('#family-grid').replaceChildren(...window.Family.members.map(member => {
+    const owned = window.Family.recipesFor(recipes, member.id);
+    const stats = window.RecipeStats.collectionStats(owned);
+    const button = document.createElement('button');
+    button.className = 'family-card';
+    button.setAttribute('aria-label', `Open ${member.name}’s cookbook, ${owned.length} recipes`);
+    button.innerHTML = `<span class="eyebrow">LVL ${stats.level} // ${stats.total} XP</span><img src="${member.image}" alt="" width="180" height="210"><strong>${escapeHTML(member.name)}</strong><span class="member-role">${member.role}</span><span class="member-count">${owned.length} RECIPES</span><span class="member-enter">[ OPEN COOKBOOK ]</span>`;
+    button.onclick = () => selectMember(member.id, 'stats');
+    return button;
+  }));
+  $('#member-switcher').replaceChildren(...window.Family.members.map(member => {
+    const button = document.createElement('button');
+    button.className = 'member-button';
+    button.setAttribute('aria-label', `Open ${member.name}’s cookbook`);
+    button.setAttribute('aria-pressed', member.id === selectedMember);
+    button.innerHTML = `<img src="${member.image}" alt="" width="32" height="38"><span>${escapeHTML(member.name)}</span>`;
+    button.onclick = () => selectMember(member.id, activeView === 'family' ? 'stats' : activeView);
+    return button;
+  }));
+}
+function selectMember(id, view = 'stats', updateLocation = true) {
+  if (!window.Family.members.some(member => member.id === id)) id = 'dan';
+  selectedMember = id;
+  category = 'All recipes';
+  $('#search').value = '';
+  $('#cookbook-owner').textContent = `${currentMember().name}’S`;
+  $('#character-name').textContent = `${currentMember().name.toUpperCase()} // ${currentMember().role}`;
+  $('#character-image').src = currentMember().image;
+  if ($('#recipe-dialog').open) $('#recipe-dialog').close();
+  renderFamily(); renderRecipes(); renderXP(); updateHealth(new Date());
+  switchView(view, updateLocation);
+}
 function switchView(view, updateLocation = true) {
-  if (!Object.hasOwn(viewHashes, view)) view = 'stats';
+  if (view !== 'family' && !Object.hasOwn(viewHashes, view)) view = 'family';
+  activeView = view;
+  updateHealth(new Date());
+  $('#family-view').hidden = view !== 'family';
+  $('#member-toolbar').hidden = view === 'family';
+  $('header nav').hidden = view === 'family';
   for (const name of Object.keys(viewHashes)) {
     const active = name === view;
     $(`#${name}-view`).hidden = !active;
@@ -85,16 +130,25 @@ function switchView(view, updateLocation = true) {
     if (active) tab.setAttribute('aria-current', 'page');
     else tab.removeAttribute('aria-current');
   }
-  if (updateLocation && location.hash !== viewHashes[view]) location.hash = viewHashes[view];
+  const hash = view === 'family' ? '#family' : `#${selectedMember}/${viewHashes[view]}`;
+  if (updateLocation && location.hash !== hash) location.hash = hash;
 }
 function viewFromLocation() {
-  const view = Object.keys(viewHashes).find(name => viewHashes[name] === location.hash) || 'stats';
-  switchView(view, false);
+  const hash = location.hash.slice(1);
+  if (!hash || hash === 'family') { switchView('family', false); return; }
+  const [first, second] = hash.split('/');
+  const member = second ? first : 'dan';
+  const tab = second || first;
+  const view = Object.keys(viewHashes).find(name => viewHashes[name] === tab);
+  if (view) selectMember(member, view, false);
+  else switchView('family', false);
 }
+$('#family-home').onclick = () => switchView('family');
 $('#stats-tab').onclick = () => switchView('stats');
 $('#recipes-tab').onclick = () => switchView('recipes');
 $('#shopping-tab').onclick = () => switchView('shopping');
 window.addEventListener('hashchange', viewFromLocation);
+renderFamily();
 viewFromLocation();
 $('#search').oninput = renderRecipes;
 $('#custom-item').onsubmit = event => { event.preventDefault(); const input = event.currentTarget.elements.item; if (!input.value.trim()) return; shopping.push({ id: crypto.randomUUID(), text: input.value.trim(), checked: false }); save(); renderShopping(); input.value = ''; input.focus(); };
@@ -118,11 +172,11 @@ function updateClock() {
 }
 function updateHealth(now) {
   const energy = window.mealPower(now);
-  const { maxHP } = window.RecipeStats.collectionStats(recipes);
+  const { maxHP } = window.RecipeStats.collectionStats(memberRecipes());
   const status = window.RecipeStats.healthState(energy.percent, maxHP);
   const hp = status.hp;
-  document.body.dataset.health = status.state;
-  const statusText = status.state === 'critical' ? 'CRITICAL HP // EAT SOON' : status.state === 'warning' ? 'LOW HP // MEAL RECOMMENDED' : 'ALL SYSTEMS OPERATIONAL';
+  document.body.dataset.health = activeView === 'family' ? 'normal' : status.state;
+  const statusText = activeView === 'family' ? 'FAMILY COOKBOOKS ONLINE' : status.state === 'critical' ? 'CRITICAL HP // EAT SOON' : status.state === 'warning' ? 'LOW HP // MEAL RECOMMENDED' : 'ALL SYSTEMS OPERATIONAL';
   $('#system-state').textContent = statusText;
   $('#footer-state').textContent = statusText;
   $('#power-fill').style.width = `${status.percent}%`;
@@ -140,7 +194,7 @@ function updateHealth(now) {
   $('#meal-status').classList.toggle('low-power', status.state !== 'normal');
 }
 function renderXP() {
-  const xp = window.RecipeStats.collectionStats(recipes);
+  const xp = window.RecipeStats.collectionStats(memberRecipes());
   $('#xp-level').textContent = `LVL ${xp.level}`;
   $('#xp-fill').style.width = `${xp.progress / xp.next * 100}%`;
   $('#xp-value').textContent = `${xp.progress}/${xp.next}`;

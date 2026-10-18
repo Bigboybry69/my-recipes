@@ -1,7 +1,7 @@
 {
   "name": "Radtion 4011",
   "short_name": "Radtion",
-  "start_url": "./#stats",
+  "start_url": "./#family",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071005",
