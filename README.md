@@ -45,3 +45,7 @@ On the first visit, the app opens at `#family`. Later launches restore the last 
 ## Food photos
 
 Recipe details include an initially expanded **View food photo** field-photo panel that can be collapsed. The natural-color serving illustrations use a worn paper frame, tape corners, and subtle scanlines. Photos are labeled in the caption as generated illustrations or original recipe photos extracted from supplied PDFs; they are not photos of the family's actual meals. Recipe cards retain their green line icons. A recipe without a `photo` field simply omits the panel. All images are bundled with the site and require no external image service.
+
+## App updates
+
+GitHub Pages stamps the deployed commit into the HTML and `version.json`. The app checks that version on startup, resume, focus, and once a minute while visible, using uncached requests. When a newer deployment is detected, it opens a fresh document URL with the new version while preserving the character/tab hash. Character preferences and shopping items remain in localStorage. Automatic refresh waits while a recipe dialog is open or an input is being edited. The footer's **Check for Updates** button explicitly checks and refreshes immediately if needed. Offline checks leave the current app usable. An existing installation must load this update once before these checks can run. No service worker is used.
