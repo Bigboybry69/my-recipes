@@ -383,6 +383,9 @@ window.GATHER_RECIPES = [
 },
 {
   "id": "better-than-sex-cake",
+  "photo": "./food-better-than-sex-cake.jpg",
+  "photoAlt": "Chocolate cake topped with whipped topping, caramel sauce, and chopped chocolate-covered toffee bars",
+  "photoCaption": "RECIPE PHOTO PROVIDED BY YOU",
   "title": "Better Than Sex Cake",
   "ownerId": "dan",
   "proteins": [],
