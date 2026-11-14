@@ -380,5 +380,34 @@ window.GATHER_RECIPES = [
     "Add 7 tablespoons ice water and pulse just until moist clumps or small balls form. Press a piece of dough between your fingertips: if it sticks together, there is enough water. If not, add more ice water 1 teaspoon at a time, using 7–8 tablespoons total. Avoid adding too much or the dough will become sticky and difficult to roll out.",
     "Transfer to a clean work surface and gather into a ball. It should not be smooth; DO NOT knead the dough. Divide in half and flatten into 2 disks. Cover with plastic wrap and refrigerate for 1 hour before using in a recipe that calls for pie crust."
   ]
+},
+{
+  "id": "better-than-sex-cake",
+  "title": "Better Than Sex Cake",
+  "ownerId": "dan",
+  "proteins": [],
+  "categories": [
+    "Dessert"
+  ],
+  "icon": "Dessert",
+  "time": 160,
+  "timeLabel": "2 hr 40 min listed; allow extra cooling",
+  "servings": 12,
+  "description": "Chocolate poke cake soaked with sweetened condensed milk and caramel, topped with Cool Whip and chopped Heath bars.",
+  "notes": "Source: John Kanell, Preppy Kitchen (uploaded recipe PDF). Listed prep: 10 minutes; cook: 30 minutes; cooling: 2 hours; total: 2 hours 40 minutes. The instructions also require 20 minutes of cooling after baking and cooling to room temperature before at least 2 hours of refrigeration, so actual elapsed time may be longer. A mixing bowl and 13×9-inch cake pan are needed. Make ahead and chill overnight if desired. Refrigerate leftovers for up to 3 days. Homemade chocolate or German chocolate cake can replace the mix; hot fudge can replace caramel. Chocolate chips, Reese’s peanut butter cups, Snickers, Oreos, or other chocolate bars can replace the Heath bars.",
+  "ingredients": [
+    "1 box devil’s food cake mix, plus ingredients required on the package",
+    "1 can (14 oz) sweetened condensed milk",
+    "¾ cup caramel sauce (180 mL)",
+    "1 container (8 oz) Cool Whip",
+    "3 Heath candy bars, chopped"
+  ],
+  "steps": [
+    "Prepare and bake the devil’s food cake according to the package directions for a 13×9-inch cake. Cool for 20 minutes, or until warm rather than hot.",
+    "Use a wooden skewer or fork to poke holes all over the cake without going through the bottom, so the filling does not leak out.",
+    "Pour the sweetened condensed milk over the cake, tilting the pan to coat it evenly and fill the holes. Drizzle the caramel sauce over the top.",
+    "Cool to room temperature, then refrigerate for at least 2 hours, or cover and chill overnight.",
+    "When ready to serve, spread the Cool Whip over the cake and sprinkle with the chopped Heath bars. Cut into squares and serve. Keep refrigerated for up to 3 days."
+  ]
 }
 ];
